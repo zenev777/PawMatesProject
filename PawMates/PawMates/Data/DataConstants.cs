@@ -54,5 +54,13 @@
         public const int EventLocationMinLenght = 10;
 
         public const string EventStartDateFormat = "yyyy-MM-dd H:mm";
+
+        //PetType constants
+
+        public const int TypeNameMaxLenght = 70;
+        public const int TypeNameMinLenght = 8;
+
+        public const int TypeDescriptionMaxLenght = 250;
+        public const int TypeDescriptionMinLenght = 20;
     }
 }
