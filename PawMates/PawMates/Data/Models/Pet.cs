@@ -49,6 +49,10 @@ namespace PawMates.Data.Models
         [Comment("Pet's weight")]
         public double Weight { get; set; }
 
+        public string ApplicationUserId { get; set; } = string.Empty;
+        [ForeignKey(nameof(ApplicationUserId))]
+        public ApplicationUser ApplicationUser { get; set; } = null!;
+
         [Required]
         public int PetTypeId { get; set; }
         [ForeignKey(nameof(PetTypeId))]
