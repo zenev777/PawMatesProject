@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PawMates.Data.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static PawMates.Data.DataConstants;
 
 namespace PawMates.Data.Models
@@ -37,9 +36,6 @@ namespace PawMates.Data.Models
         [Comment("User's gender")]
         public Gender Gender { get; set; }
 
-        public int PetId { get; set; }
-        [ForeignKey(nameof(PetId))]
-        public Pet Pet { get; set; } = null!;
 
         public ICollection<Pet> Pets { get; set; } = new List<Pet>();
     }
