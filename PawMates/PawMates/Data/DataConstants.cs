@@ -31,9 +31,6 @@
         public const int UserAdressNameMaxLenght = 100;
         public const int UserAdressNameMinLenght = 15;
 
-        public const int UserPhoneMaxLenght = 15;
-        public const int UserPhoneMinLenght = 3;
-
         //Events constants
 
         public const int EventNameMaxLenght = 70;

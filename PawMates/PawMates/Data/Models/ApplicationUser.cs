@@ -28,11 +28,6 @@ namespace PawMates.Data.Models
         [Comment("User's adress name")]
         public string Adress { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(UserPhoneMaxLenght)]
-        [Comment("User's phone number")]
-        public string MobileNumber { get; set; } = string.Empty;
-
         [Comment("User's gender")]
         public Gender Gender { get; set; }
 
