@@ -99,10 +99,6 @@ namespace PawMates.Areas.Identity.Pages.Account
             public string Adress { get; set; }
 
             [Required]
-            [Display(Name = "MobileNumber")]
-            public string MobileNumber { get; set; }
-
-            [Required]
             [Display(Name = "Gender")]
             public Gender Gender { get; set; }
         }
@@ -124,7 +120,6 @@ namespace PawMates.Areas.Identity.Pages.Account
                     LastName = Input.LastName,
                     Country = Input.Country,
                     Adress = Input.Adress,
-                    MobileNumber=Input.MobileNumber,
                     Gender = Input.Gender 
                 };
 
