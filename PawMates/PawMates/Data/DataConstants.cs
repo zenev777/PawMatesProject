@@ -20,24 +20,16 @@
         public const int PetWeightMaxLenght = 100;
         public const int PetWeightMinLenght = 0;
 
-        //need a research
-        //public const int PetGenderMaxLenght = 6;
-        //public const int PetGenderMinLenght = 4;
-
-
         //Users constants
 
-        public const int UserFirstNameMaxLenght = 50;
-        public const int UserSecondNameMinLenght = 2;
+        public const int UserNamesMaxLenght = 50;
+        public const int UserNamesMinLenght = 2;
 
         public const int UserCountryNameMaxLenght = 56;
         public const int UserCountryNameMinLenght = 4;
 
         public const int UserAdressNameMaxLenght = 100;
         public const int UserAdressNameMinLenght = 15;
-
-        public const int UserGenderMaxLenght = 35;
-        public const int UserGenderMinLenght = 3;
 
         public const int UserPhoneMaxLenght = 15;
         public const int UserPhoneMinLenght = 3;
