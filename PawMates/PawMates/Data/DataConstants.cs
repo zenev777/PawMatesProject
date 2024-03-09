@@ -20,16 +20,13 @@
         public const int PetWeightMaxLenght = 100;
         public const int PetWeightMinLenght = 0;
 
-        //Owner constants
+        //Posts constants
 
-        public const int OwnerNamesMaxLenght = 50;
-        public const int OwnerNamesMinLenght = 2;
+        public const int PostNameMaxLenght = 50;
+        public const int PostNameMinLenght = 2;
                          
-        public const int OwnerCountryNameMaxLenght = 56;
-        public const int OwnerCountryNameMinLenght = 4;
-                         
-        public const int OwnerAdressNameMaxLenght = 100;
-        public const int OwnerAdressNameMinLenght = 15;
+        public const int PostDescriptionMaxLenght = 56;
+        public const int PostDescriptionMinLenght = 4;                  
 
         //Events constants
 
