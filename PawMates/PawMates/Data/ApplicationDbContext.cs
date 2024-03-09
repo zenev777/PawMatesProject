@@ -68,6 +68,6 @@ namespace PawMates.Data
         public DbSet<PetType> PetTypes { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
-        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Post> Posts { get; set; }
     }
 }
