@@ -5,7 +5,7 @@ using static PawMates.Data.DataConstants;
 
 namespace PawMates.Models
 {
-    public class ProfileFormViewModel
+    public class PetFormViewModel
     {
         //[Required(ErrorMessage = RequireErrorMessage)]
         //[StringLength(OwnerNamesMaxLenght, MinimumLength = OwnerNamesMinLenght, ErrorMessage = StringLengthErrorMessage)]
