@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace PawMates.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -60,10 +61,13 @@ namespace PawMates.Data
                     Id = 7,
                     Name = "Reptiles"
                 });
-
-
         }
 
 
+        public DbSet<Pet> Pets { get; set; }
+        public DbSet<PetType> PetTypes { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventParticipant> EventParticipants { get; set; }
+        public DbSet<Owner> Owners { get; set; }
     }
 }

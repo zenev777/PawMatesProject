@@ -6,8 +6,12 @@ using static PawMates.Data.DataConstants;
 
 namespace PawMates.Data.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class Owner 
     {
+        [Key]
+        [Comment("Owner identifier")]
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(UserNamesMaxLenght)]
         [Comment("User's first name")]
