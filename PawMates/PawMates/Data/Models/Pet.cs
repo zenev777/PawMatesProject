@@ -39,7 +39,7 @@ namespace PawMates.Data.Models
 
         [MaxLength(PetColorMaxLenght)]
         [Comment("Pet's second color")]
-        public string SecondaryColor { get; set; } = string.Empty;
+        public string? SecondaryColor { get; set; }
 
         [Required]
         [Comment("Pet's gender")]
@@ -50,9 +50,9 @@ namespace PawMates.Data.Models
         [Comment("Pet's weight")]
         public double Weight { get; set; }
 
-        public string ApplicationUserId { get; set; } = string.Empty;
-        [ForeignKey(nameof(ApplicationUserId))]
-        public IdentityUser ApplicationUser { get; set; } = null!;
+        public string OwnerId { get; set; } = string.Empty;
+        [ForeignKey(nameof(OwnerId))]
+        public IdentityUser Owner { get; set; } = null!;
 
         [Required]
         public int PetTypeId { get; set; }

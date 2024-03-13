@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PawMates.Data;
 
@@ -11,9 +12,10 @@ using PawMates.Data;
 namespace PawMates.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309122155_post")]
+    partial class post
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,6 +298,10 @@ namespace PawMates.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("Pet's age");
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Breed")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -322,26 +328,23 @@ namespace PawMates.Data.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasComment("Pet's name");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PetTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecondaryColor")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasComment("Pet's second color");
 
                     b.Property<double>("Weight")
-                        .HasMaxLength(500)
+                        .HasMaxLength(100)
                         .HasColumnType("float")
                         .HasComment("Pet's weight");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PetTypeId");
 
@@ -538,9 +541,9 @@ namespace PawMates.Data.Migrations
 
             modelBuilder.Entity("PawMates.Data.Models.Pet", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -550,7 +553,7 @@ namespace PawMates.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("PetType");
                 });

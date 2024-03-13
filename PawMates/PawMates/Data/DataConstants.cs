@@ -9,7 +9,7 @@
         public const int PetAgeMaxLenght = 100;
         public const int PetAgeMinLenght = 0;
 
-        public const string DateOfBirthFormat = "DD/MM/YY";
+        public const string DateOfBirthFormat = "dd/MM/yyyy";
 
         public const int PetBreedMaxLenght = 60;
         public const int PetBreedMinLenght = 2;
@@ -17,19 +17,16 @@
         public const int PetColorMaxLenght = 30;
         public const int PetColorMinLenght = 3;
 
-        public const int PetWeightMaxLenght = 100;
+        public const int PetWeightMaxLenght = 500;
         public const int PetWeightMinLenght = 0;
 
-        //Users constants
+        //Posts constants
 
-        public const int UserNamesMaxLenght = 50;
-        public const int UserNamesMinLenght = 2;
-
-        public const int UserCountryNameMaxLenght = 56;
-        public const int UserCountryNameMinLenght = 4;
-
-        public const int UserAdressNameMaxLenght = 100;
-        public const int UserAdressNameMinLenght = 15;
+        public const int PostNameMaxLenght = 50;
+        public const int PostNameMinLenght = 2;
+                         
+        public const int PostDescriptionMaxLenght = 56;
+        public const int PostDescriptionMinLenght = 4;                  
 
         //Events constants
 
@@ -51,5 +48,12 @@
 
         public const int TypeDescriptionMaxLenght = 250;
         public const int TypeDescriptionMinLenght = 20;
+
+        //Error message
+
+        public const string RequireErrorMessage = "The field {0} is required";
+        public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters long";
+        public const string RangeIntErrorMessage = "The field {0} must be between {1} and {2} characters long";
+
     }
 }
