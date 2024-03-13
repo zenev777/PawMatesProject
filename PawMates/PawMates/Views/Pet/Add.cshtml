@@ -1,78 +1,78 @@
 ﻿@model PetFormViewModel
 
-	<div class="row">
-		<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-			<form asp-action="Add" method="post">
-				<div class="mb-3">
-					<label asp-for="@Model.Name" class="form-label-add-edit">Seminar Topic</label>
-					<input asp-for="@Model.Name" class="form-control" aria-required="true" />
-					<span asp-validation-for="@Model.Name" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.Age" class="form-label-add-edit">Lecturer</label>
-					<input asp-for="@Model.Age" class="form-control" aria-required="true" />
-					<span asp-validation-for="@Model.Age" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.Breed" class="form-label-add-edit">More Info</label>
-					<textarea asp-for="@Model.Breed" class="form-control" aria-required="true" rows="5"></textarea>
-					<span asp-validation-for="@Model.Breed" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.DateOfBirth" class="form-label-add-edit">Date of Seminar</label>
-					<input asp-for="@Model.DateOfBirth" class="form-control" aria-required="true" placeholder="dd/MM/yyyy HH:mm" )" />
-					<span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.MainColor" class="form-label-add-edit">Duration</label>
-					<input asp-for="@Model.MainColor" class="form-control" placeholder="30-180 min" />
-					<span asp-validation-for="@Model.MainColor" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.SecondaryColor" class="form-label-add-edit">Duration</label>
-					<input asp-for="@Model.SecondaryColor" class="form-control" placeholder="30-180 min" />
-					<span asp-validation-for="@Model.SecondaryColor" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.Weight" class="form-label-add-edit">Duration</label>
-					<input asp-for="@Model.Weight" class="form-control" placeholder="30-180 min" />
-					<span asp-validation-for="@Model.Weight" class="text-danger"></span>
-				</div>
-				<div class="mb-3">
-					<label asp-for="@Model.PetTypeId" class="form-label-add-edit">Select Category</label>
-					<select asp-for="@Model.PetTypeId" class="form-control" aria-required="true">
-						<option disabled selected value="">Select Category...</option>
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form asp-action="Add" method="post">
+			<div class="mb-3">
+				<label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
+				<input asp-for="@Model.Name" class="form-control" />
+				<span asp-validation-for="@Model.Name" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Age" class="form-label-add-edit">Age</label>
+				<input asp-for="@Model.Age" class="form-control" />
+				<span asp-validation-for="@Model.Age" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Breed" class="form-label-add-edit">Breed</label>
+				<input asp-for="@Model.Breed" class="form-control" />
+				<span asp-validation-for="@Model.Breed" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.DateOfBirth" class="form-label-add-edit">Date of Birth</label>
+				<input asp-for="@Model.DateOfBirth" class="form-control" placeholder="DD/MM/YY" )" />
+				<span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.MainColor" class="form-label-add-edit">MainColor</label>
+				<input asp-for="@Model.MainColor" class="form-control"  />
+				<span asp-validation-for="@Model.MainColor" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.SecondaryColor" class="form-label-add-edit">SecondaryColor</label>
+				<input asp-for="@Model.SecondaryColor" class="form-control" />
+				<span asp-validation-for="@Model.SecondaryColor" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.Weight" class="form-label-add-edit">Weight</label>
+				<input asp-for="@Model.Weight" class="form-control"  />
+				<span asp-validation-for="@Model.Weight" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.PetTypeId" class="form-label-add-edit">Select Pet Type</label>
+				<select asp-for="@Model.PetTypeId" class="form-control" >
+					<option disabled selected value="">Select Category...</option>
 					@foreach (var pettype in Model.PetTypes)
 					{
-									<option value="@pettype.Id">@pettype.Name</option>
+						<option value="@pettype.Id">@pettype.Name</option>
 					}
-					</select>
-					<span asp-validation-for="@Model.PetTypeId" class="text-danger"></span>
-				</div>
+				</select>
+				<span asp-validation-for="@Model.PetTypeId" class="text-danger"></span>
+			</div>
 
-				<div class="row row-margin-zero">
-	<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
-		<input type="radio" asp-for="@Model.Gender" name="Gender"  value="1" class="margin-rightt-five">
-		Male
-	</label>
-	<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
-		<input type="radio"  asp-for="@Model.Gender" name="Gender" value="2" class="margin-rightt-five">
-		Female
-	</label>
-	<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
-		<input type="radio"  asp-for="@Model.Gender" name="Gender" value="0" class="margin-rightt-five">
-		Other
-	</label>
+			<div class="row row-margin-zero">
+				<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
+					<input type="radio" asp-for="@Model.Gender" name="Gender" value="1" class="margin-rightt-five">
+					Male
+				</label>
+				<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
+					<input type="radio" asp-for="@Model.Gender" name="Gender" value="2" class="margin-rightt-five">
+					Female
+				</label>
+				<label class="radio-inline margin-rightt-ten margin-leftt-five margin-top-none">
+					<input type="radio" asp-for="@Model.Gender" name="Gender" value="0" class="margin-rightt-five">
+					Other
+				</label>
+			</div>
+
+			<div class="mb-3">
+				<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Announce" />
+			</div>
+		</form>
+	</div>
 </div>
-
-				<div class="mb-3">
-					<input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Announce" />
-				</div>
-			</form>
-		</div>
-	</div> 
 
 
 @section Scripts {
-			<partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
     }

@@ -16,7 +16,7 @@ namespace PawMates.Models
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        [Range(PetAgeMinLenght, PetAgeMaxLenght, ErrorMessage =RequireErrorMessage)]
+        [Range(PetAgeMinLenght, PetAgeMaxLenght, ErrorMessage = RangeIntErrorMessage)]
         public int Age { get; set; }
 
 
@@ -32,6 +32,8 @@ namespace PawMates.Models
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string MainColor { get; set; } = string.Empty;
 
+
+        [Required(AllowEmptyStrings = true)]
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string SecondaryColor { get; set; } = string.Empty;
 
@@ -42,8 +44,9 @@ namespace PawMates.Models
         [Range(PetWeightMinLenght, PetWeightMaxLenght, ErrorMessage = RangeIntErrorMessage)]
         public double Weight { get; set; }
 
+
         public int PetTypeId { get; set; }
 
-        public ICollection<PetTypesViewModel> PetTypes { get; set;} = new List<PetTypesViewModel>();
+        public IEnumerable<PetTypesViewModel> PetTypes { get; set;} = new List<PetTypesViewModel>();
     }
 }
