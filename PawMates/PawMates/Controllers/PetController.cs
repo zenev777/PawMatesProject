@@ -65,6 +65,8 @@ namespace PawMates.Controllers
 				OwnerId = GetUserId(),
 			};
 
+			//Add error massage for similar pet
+
 			await data.Pets.AddAsync(entity);
 
 			await data.SaveChangesAsync();
