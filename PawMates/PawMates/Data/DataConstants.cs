@@ -17,7 +17,7 @@
         public const int PetColorMaxLenght = 30;
         public const int PetColorMinLenght = 3;
 
-        public const int PetWeightMaxLenght = 100;
+        public const int PetWeightMaxLenght = 500;
         public const int PetWeightMinLenght = 0;
 
         //Posts constants
