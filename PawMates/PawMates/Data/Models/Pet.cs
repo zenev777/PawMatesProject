@@ -39,7 +39,7 @@ namespace PawMates.Data.Models
 
         [MaxLength(PetColorMaxLenght)]
         [Comment("Pet's second color")]
-        public string SecondaryColor { get; set; } = string.Empty;
+        public string? SecondaryColor { get; set; }
 
         [Required]
         [Comment("Pet's gender")]
