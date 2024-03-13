@@ -9,7 +9,7 @@
         public const int PetAgeMaxLenght = 100;
         public const int PetAgeMinLenght = 0;
 
-        public const string DateOfBirthFormat = "DD/MM/YY";
+        public const string DateOfBirthFormat = "dd/MM/yyyy";
 
         public const int PetBreedMaxLenght = 60;
         public const int PetBreedMinLenght = 2;
