@@ -33,9 +33,8 @@ namespace PawMates.Models
         public string MainColor { get; set; } = string.Empty;
 
 
-        [Required(AllowEmptyStrings = true)]
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
-        public string SecondaryColor { get; set; } = string.Empty;
+        public string? SecondaryColor { get; set; }
 
         [Required]
         public Gender Gender { get; set; } 
