@@ -54,7 +54,7 @@ namespace PawMates.Controllers
 			var entity = new Pet()
 			{
 				Name = model.Name,
-				Age = model.Age,
+				ImageUrl = model.ImageUrl,
 				Breed = model.Breed,
 				MainColor = model.MainColor,
 				SecondaryColor = model.SecondaryColor,
@@ -71,15 +71,32 @@ namespace PawMates.Controllers
 
 			await data.SaveChangesAsync();
 
-			return RedirectToAction("Home","Index");
+			return RedirectToAction(nameof(All));
 		}
 
+		[HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var pets = await data.Pets
+                .AsNoTracking()
+				.Where(p=>p.OwnerId == GetUserId())
+                .Select(p => new PetInfoViewModel()
+				{
+					Name= p.Name,
+					ImageUrl= p.ImageUrl,
+					Breed = p.Breed,
+					PetTypeId = p.PetTypeId,
+					Id = p.Id,
+					OwnerId = p.OwnerId 
+				})
+                .ToListAsync();
+
+            return View(pets);
+        }
 
 
 
-
-
-		private string GetUserId()
+        private string GetUserId()
 		{
 			return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 		}
