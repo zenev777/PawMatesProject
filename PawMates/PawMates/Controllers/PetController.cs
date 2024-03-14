@@ -120,7 +120,32 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = GetUserId();
 
+            var model = await data.Pets
+                .Where(p => p.OwnerId == userId)
+                .AsNoTracking()
+                .Select(s => new PetDeleteViewModel()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    DateOfBirth = s.DateOfBirth,
+                })
+                .FirstOrDefaultAsync();
+
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model);
+        }
+
+        
 
 
 
