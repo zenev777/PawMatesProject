@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PetInfoViewModel>
+@{
+    ViewBag.Title = "My Pets";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @if (Model.Count()==0)
+    {
+        <h1 class="text-center">You haven't added a pet yet</h1>
+    }
+    @foreach (var e in Model)
+    {    
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src=@e.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+                <div class="card-body">
+                    <h5 class="card-title">@e.Name</h5>
+                    <p class="card-text">@e.PetTypeId</p>
+                    <p class="card-text">@e.Breed</p>
+                </div>
+                <a asp-controller="Pet" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Pet" asp-action="Details" asp-route-id="@e.Id" class="btn btn-success">Details</a>
+                <a asp-controller="Pet" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-danger">Delete</a>
+            </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

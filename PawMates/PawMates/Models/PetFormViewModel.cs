@@ -14,15 +14,11 @@ namespace PawMates.Models
         [StringLength(PetNameMaxLenght, MinimumLength = PetNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
 
-
         [Required(ErrorMessage = RequireErrorMessage)]
-        [Range(PetAgeMinLenght, PetAgeMaxLenght, ErrorMessage = RangeIntErrorMessage)]
-        public int Age { get; set; }
-
+        public string ImageUrl { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
         public string DateOfBirth { get; set; } = string.Empty;
-
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(PetBreedMaxLenght, MinimumLength = PetBreedMinLenght, ErrorMessage = StringLengthErrorMessage)]
@@ -31,7 +27,6 @@ namespace PawMates.Models
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string MainColor { get; set; } = string.Empty;
-
 
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string? SecondaryColor { get; set; }
@@ -42,7 +37,6 @@ namespace PawMates.Models
         [Required]
         [Range(PetWeightMinLenght, PetWeightMaxLenght, ErrorMessage = RangeIntErrorMessage)]
         public double Weight { get; set; }
-
 
         public int PetTypeId { get; set; }
 
