@@ -9,7 +9,7 @@ namespace PawMates.Models
 
 		public string Name { get; set; } = string.Empty;
 
-		public int Age { get; set; }
+		public string ImageUrl { get; set; } = string.Empty;
 
 		public string DateOfBirth { get; set; } = string.Empty;
 
@@ -25,6 +25,8 @@ namespace PawMates.Models
 
 		public int PetTypeId { get; set; }
 
-		public IEnumerable<PetTypesViewModel> PetTypes { get; set; } = new List<PetTypesViewModel>();
+		public string OwnerId { get; set; } = null!;
+
+        public IEnumerable<PetTypesViewModel> PetTypes { get; set; } = new List<PetTypesViewModel>();
 	}
 }

@@ -19,9 +19,8 @@ namespace PawMates.Data.Models
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(PetAgeMaxLenght)]
-        [Comment("Pet's age")]
-        public int Age { get; set; }
+        [Comment("Pet's image")]
+        public string ImageUrl { get; set; } = string.Empty;
 
         [Required]
         [Comment("Pet's birthday")]

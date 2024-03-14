@@ -15,8 +15,7 @@ namespace PawMates.Models
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        [Range(PetAgeMinLenght, PetAgeMaxLenght, ErrorMessage = RangeIntErrorMessage)]
-        public int Age { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
         public string DateOfBirth { get; set; } = string.Empty;
