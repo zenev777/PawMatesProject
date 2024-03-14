@@ -19,8 +19,6 @@
                 <img class="card-img-top" src=@e.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
                 <div class="card-body">
                     <h5 class="card-title">@e.Name</h5>
-                    @* <p class="card-text">@e.PetType</p>
-                    <p class="card-text">@e.Breed</p> *@
                 </div>
                 <a asp-controller="Pet" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
                 <a asp-controller="Pet" asp-action="Details" asp-route-id="@e.Id" class="btn btn-success">Details</a>
