@@ -5,6 +5,7 @@ using PawMates.Data.Models;
 using PawMates.Models;
 using System.Globalization;
 using System.Security.Claims;
+using static PawMates.Data.DataConstants;
 
 namespace PawMates.Controllers
 {
@@ -28,7 +29,6 @@ namespace PawMates.Controllers
 			return View(model);
 
 		}
-
 
 		[HttpPost]
 		public async Task<IActionResult> Add(PetFormViewModel model)
@@ -84,15 +84,43 @@ namespace PawMates.Controllers
 				{
 					Name= p.Name,
 					ImageUrl= p.ImageUrl,
-					Breed = p.Breed,
-					PetTypeId = p.PetTypeId,
 					Id = p.Id,
-					OwnerId = p.OwnerId 
 				})
                 .ToListAsync();
 
             return View(pets);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await data.Pets
+                .Where(p => p.Id == id)
+                .AsNoTracking()
+                .Select(p => new PetInfoViewModel()
+                {
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth.ToString(DateOfBirthFormat),
+                    ImageUrl = p.ImageUrl,
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender,
+					MainColor = p.MainColor,
+					SecondaryColor=p.SecondaryColor,
+					Weight = p.Weight,
+                    OwnerId = p.OwnerId
+                })
+                .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model);
+        }
+
+
 
 
 
