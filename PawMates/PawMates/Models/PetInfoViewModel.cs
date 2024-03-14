@@ -17,16 +17,15 @@ namespace PawMates.Models
 
 		public string MainColor { get; set; } = string.Empty;
 
-		public string SecondaryColor { get; set; } = string.Empty;
+		public string? SecondaryColor { get; set; }
 
 		public Gender Gender { get; set; }
 
 		public double Weight { get; set; }
 
-		public int PetTypeId { get; set; }
+		public string PetType { get; set; } = string.Empty;
 
 		public string OwnerId { get; set; } = null!;
 
-        public IEnumerable<PetTypesViewModel> PetTypes { get; set; } = new List<PetTypesViewModel>();
 	}
 }
