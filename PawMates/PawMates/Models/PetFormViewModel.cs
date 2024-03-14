@@ -8,7 +8,6 @@ namespace PawMates.Models
 {
     public class PetFormViewModel
     {
-        public int Id { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(PetNameMaxLenght, MinimumLength = PetNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
@@ -31,11 +30,11 @@ namespace PawMates.Models
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string? SecondaryColor { get; set; }
 
-        [Required]
-        public Gender Gender { get; set; } 
+		[Required(ErrorMessage = RequireErrorMessage)]
+		public Gender Gender { get; set; }
 
-        [Required]
-        [Range(PetWeightMinLenght, PetWeightMaxLenght, ErrorMessage = RangeIntErrorMessage)]
+		[Required(ErrorMessage = RequireErrorMessage)]
+		[Range(PetWeightMinLenght, PetWeightMaxLenght, ErrorMessage = RangeIntErrorMessage)]
         public double Weight { get; set; }
 
         public int PetTypeId { get; set; }
