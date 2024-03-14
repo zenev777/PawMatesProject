@@ -1,0 +1,33 @@
+﻿@model PetInfoViewModel
+@{
+    ViewBag.Title = "Pet Details";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    <div class="card w-100">
+        <div class="card-body">
+            <h3 class="card-title text-center">@Model.Name</h3>
+            <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap" style="height:200px ; width=200px; object-fit: cover; object-position: 25% 25%;">
+            <p class="mb-0"><span class="fw-bold">Date of Birth: </span>@Model.DateOfBirth</p>
+            <p class="mb-0"><span class="fw-bold">Pet Type: </span>@Model.PetType</p>
+            <p class="mb-0"><span class="fw-bold">Breed: </span>@Model.Breed</p>
+            <p class="mb-0"><span class="fw-bold">Gender: </span>@Model.Gender</p>
+            <p class="mb-0"><span class="fw-bold">Main Color: </span>@Model.MainColor</p>
+            <p class="mb-0"><span class="fw-bold">Secondary Color: </span>@Model.SecondaryColor</p>
+            <p class="mb-0"><span class="fw-bold">Weight: </span>@Model.Weight</p>
+        </div>
+
+        <a asp-controller="Pet" asp-action="All" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to All Events</a>
+        <a asp-controller="Pet" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
