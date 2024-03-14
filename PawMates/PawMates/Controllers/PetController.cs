@@ -204,6 +204,57 @@ namespace PawMates.Controllers
 			return View(model);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Edit(PetFormViewModel model, int id)
+		{
+			var pet = await data.Pets
+				.FindAsync(id);
+
+			if (pet == null)
+			{
+				return BadRequest();
+			}
+
+			if (pet.OwnerId != GetUserId())
+			{
+				return Unauthorized();
+			}
+
+			DateTime birth = DateTime.Now;
+
+			if (!DateTime.TryParseExact(
+				model.DateOfBirth,
+				DateOfBirthFormat,
+				CultureInfo.InvariantCulture,
+				DateTimeStyles.None,
+				out birth))
+			{
+				ModelState
+					.AddModelError(nameof(model.DateOfBirth), $"Invalid date! Format must be: {DateOfBirthFormat}");
+			}
+
+			if (!ModelState.IsValid)
+			{
+				model.PetTypes = await GetPetTypes();
+
+				return View(model);
+			}
+
+			pet.Name = model.Name;
+			pet.Breed = model.Breed;
+			pet.DateOfBirth = birth;
+			pet.Weight = model.Weight;
+			pet.PetTypeId = model.PetTypeId;
+			pet.MainColor = model.MainColor;
+			pet.SecondaryColor = model.SecondaryColor;
+			pet.Gender = model.Gender;
+			pet.ImageUrl = model.ImageUrl;
+
+			await data.SaveChangesAsync();
+
+			return RedirectToAction(nameof(All));
+		}
+
 		private string GetUserId()
 		{
 			return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
