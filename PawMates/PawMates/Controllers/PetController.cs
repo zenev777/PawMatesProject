@@ -127,6 +127,7 @@ namespace PawMates.Controllers
 
             var model = await data.Pets
                 .Where(p => p.OwnerId == userId)
+                .Where(p => p.Id == id)
                 .AsNoTracking()
                 .Select(s => new PetDeleteViewModel()
                 {
@@ -145,7 +146,29 @@ namespace PawMates.Controllers
             return View(model);
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(PetDeleteViewModel model)
+        {
+            var pet = await data.Pets
+                .Where(p => p.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (pet == null)
+            {
+                return BadRequest();
+            }
+
+            if (pet.OwnerId != GetUserId())
+            {
+                return BadRequest();
+            }
+
+            data.Pets.Remove(pet);
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
+        }
 
 
 
