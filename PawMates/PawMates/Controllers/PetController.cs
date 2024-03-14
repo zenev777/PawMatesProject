@@ -170,9 +170,41 @@ namespace PawMates.Controllers
             return RedirectToAction(nameof(All));
         }
 
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var pet = await data.Pets
+				.FindAsync(id);
 
+			if (pet == null)
+			{
+				return BadRequest();
+			}
 
-        private string GetUserId()
+			if (pet.OwnerId != GetUserId())
+			{
+				return Unauthorized();
+			}
+
+			var model = new PetFormViewModel()
+			{
+				Name = pet.Name,
+				Breed = pet.Breed,
+				DateOfBirth=pet.DateOfBirth.ToString(DateOfBirthFormat),
+				MainColor = pet.MainColor,
+				SecondaryColor = pet.SecondaryColor,
+				Gender = pet.Gender,
+				PetTypeId = pet.PetTypeId,
+				ImageUrl = pet.ImageUrl,
+				Weight = pet.Weight,
+			};
+
+			model.PetTypes = await GetPetTypes();
+
+			return View(model);
+		}
+
+		private string GetUserId()
 		{
 			return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 		}
