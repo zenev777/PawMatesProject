@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PawMates.Data;
 using PawMates.Data.Models;
 using PawMates.Models;
@@ -17,9 +18,27 @@ namespace PawMates.Controllers
             data = context;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var events = await data.Events
+                .AsNoTracking()
+                .Select(e => new EventInfoViewModel()
+                {
+                    Name = e.Name,
+                    StartsOn = e.StartsOn.ToString(EventStartDateFormat),
+                    Location = e.Location,
+                    Description = e.Description,
+                    OrganiserId = e.OrganiserId,
+                    Id = e.Id,
+                })
+                .ToListAsync();
+
+            return View(events);
+        }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             var model = new EventFormViewModel();
 
@@ -51,6 +70,7 @@ namespace PawMates.Controllers
             {
                 StartsOn = DateTime.Now,
                 Description = model.Description,
+                Location = model.Location,
                 Name = model.Name,
                 OrganiserId = GetUserId(),
             };
