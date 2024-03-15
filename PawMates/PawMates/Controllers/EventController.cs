@@ -134,6 +134,35 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var e = await data.Events
+                .FindAsync(id);
+
+            if (e == null)
+            {
+                return BadRequest();
+            }
+
+            if (e.OrganiserId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            var model = new EventFormViewModel()
+            {
+                Name = e.Name,
+                Description = e.Description,
+                Location = e.Location,
+                StartsOn = e.StartsOn.ToString(DateOfBirthFormat),
+            };
+
+            return View(model);
+        }
+
+
+
         private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
