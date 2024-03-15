@@ -39,7 +39,7 @@
         public const int EventLocationMaxLenght = 100;
         public const int EventLocationMinLenght = 10;
 
-        public const string EventStartDateFormat = "yyyy-MM-dd H:mm";
+        public const string EventStartDateFormat = "dd/MM/yyyy HH:mm";
 
         //PetType constants
 
