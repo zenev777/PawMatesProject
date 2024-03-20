@@ -205,6 +205,34 @@ namespace PawMates.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = GetUserId();
+
+            var model = await data.Events
+                .Where(e => e.OrganiserId == userId)
+                .Where(e => e.Id == id)
+                .AsNoTracking()
+                .Select(e => new EventDeleteViewModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    StartsOn = e.StartsOn,
+                })
+                .FirstOrDefaultAsync();
+
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model);
+        }
+
+        
+
         private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
