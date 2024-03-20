@@ -231,7 +231,30 @@ namespace PawMates.Controllers
             return View(model);
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(PetDeleteViewModel model)
+        {
+            var ev = await data.Events
+                .Where(e => e.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (ev == null)
+            {
+                return BadRequest();
+            }
+
+            if (ev.OrganiserId != GetUserId())
+            {
+                return BadRequest();
+            }
+
+            data.Events.Remove(ev);
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
+        }
+
 
         private string GetUserId()
         {
