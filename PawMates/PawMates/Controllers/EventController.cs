@@ -70,7 +70,7 @@ namespace PawMates.Controllers
 
             var entity = new Event()
             {
-                StartsOn = DateTime.Now,
+                StartsOn = start,
                 Description = model.Description,
                 Location = model.Location,
                 Name = model.Name,
