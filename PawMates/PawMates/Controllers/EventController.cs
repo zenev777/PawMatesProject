@@ -31,7 +31,7 @@ namespace PawMates.Controllers
                     StartsOn = e.StartsOn.ToString(EventStartDateFormat),
                     Location = e.Location,
                     Description = e.Description,
-                    OrganiserId = e.OrganiserId,
+                    OrganiserId = e.Organiser.UserName,
                     Id = e.Id,
                 })
                 .ToListAsync();
@@ -155,13 +155,55 @@ namespace PawMates.Controllers
                 Name = e.Name,
                 Description = e.Description,
                 Location = e.Location,
-                StartsOn = e.StartsOn.ToString(DateOfBirthFormat),
+                StartsOn = e.StartsOn.ToString(EventStartDateFormat),
             };
 
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(EventFormViewModel model, int id)
+        {
+            var e = await data.Events
+                .FindAsync(id);
+            
+            DateTime start = DateTime.Now;
 
+            if (e == null)
+            {
+                return BadRequest();
+            }
+
+            if (e.OrganiserId != GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            if (!DateTime.TryParseExact(
+                model.StartsOn,
+                EventStartDateFormat,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out start))
+            {
+                ModelState
+                    .AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
+            } 
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            e.StartsOn = start;
+            e.Name = model.Name;
+            e.Description = model.Description;
+            e.Location = model.Location;
+
+            await data.SaveChangesAsync();
+
+            return RedirectToAction(nameof(All));
+        }
 
         private string GetUserId()
         {
