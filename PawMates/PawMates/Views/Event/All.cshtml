@@ -15,7 +15,10 @@
                 <h5 class="card-title mt-1">@e.Name</h5>
                 <p class="mb-0"><span class="fw-bold">Starting time: </span>@e.StartsOn</p>
                 <p class="mb-0"><span class="fw-bold">Location: </span>@e.Location</p>
-                <p class="mb-0"><span class="fw-bold">Description: </span>@e.StartsOn</p>
+                @if (e.Description != null)
+                {
+                    <p class="mb-0"><span class="fw-bold">Description: </span>@e.Description</p>
+                }
             </div>
 
             <a asp-controller="Event" asp-action="Details" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">View Details</a>
