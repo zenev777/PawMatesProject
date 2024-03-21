@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawMates", "PawMates\PawMates.csproj", "{47E5EBAA-FD7A-4C46-8CB3-2B1AC0D9BC91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawMates", "PawMates\PawMates.csproj", "{47E5EBAA-FD7A-4C46-8CB3-2B1AC0D9BC91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawMates.Core", "PawMates.Core\PawMates.Core.csproj", "{06A17C51-F0B1-4137-9448-99D034CA789C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawMates.Infrastructure", "PawMates.Infrastructure\PawMates.Infrastructure.csproj", "{9B110563-45F8-4136-9AB3-C14C494D746B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{47E5EBAA-FD7A-4C46-8CB3-2B1AC0D9BC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47E5EBAA-FD7A-4C46-8CB3-2B1AC0D9BC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47E5EBAA-FD7A-4C46-8CB3-2B1AC0D9BC91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06A17C51-F0B1-4137-9448-99D034CA789C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06A17C51-F0B1-4137-9448-99D034CA789C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06A17C51-F0B1-4137-9448-99D034CA789C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06A17C51-F0B1-4137-9448-99D034CA789C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B110563-45F8-4136-9AB3-C14C494D746B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B110563-45F8-4136-9AB3-C14C494D746B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B110563-45F8-4136-9AB3-C14C494D746B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B110563-45F8-4136-9AB3-C14C494D746B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

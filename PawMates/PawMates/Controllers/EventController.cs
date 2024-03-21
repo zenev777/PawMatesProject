@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PawMates.Data;
-using PawMates.Data.Models;
+using PawMates.Infrastructure.Data;
+using PawMates.Infrastructure.Data.Models;
 using PawMates.Models;
 using System.Globalization;
 using System.Security.Claims;
-using static PawMates.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Controllers
 {

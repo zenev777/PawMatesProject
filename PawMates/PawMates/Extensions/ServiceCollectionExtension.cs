@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using PawMates.Data;
+using PawMates.Infrastructure.Data;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            return service;
+            return services;
         }
 
 

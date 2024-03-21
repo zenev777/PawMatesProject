@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PawMates.Data.Models;
+using PawMates.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using static PawMates.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Models
 {

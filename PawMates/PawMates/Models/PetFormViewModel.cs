@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawMates.Data.Enums;
-using PawMates.Data.Models;
+using PawMates.Infrastructure.Data.Enums;
+using PawMates.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
-using static PawMates.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Models
 {

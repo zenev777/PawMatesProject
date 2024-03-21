@@ -1,4 +1,4 @@
-﻿using PawMates.Data.Enums;
+﻿using PawMates.Infrastructure.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace PawMates.Models
