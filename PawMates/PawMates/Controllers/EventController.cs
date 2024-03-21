@@ -127,7 +127,7 @@ namespace PawMates.Controllers
                     Name = ep.Event.Name,
                     StartsOn = ep.Event.StartsOn.ToString(EventStartDateFormat),
                     Location = ep.Event.Location,
-                    OrganiserId =  ep.Event.Organiser.UserName
+                    OrganiserId = ep.Event.Organiser.UserName
                 })
                 .ToListAsync();
 
@@ -166,7 +166,7 @@ namespace PawMates.Controllers
         {
             var e = await data.Events
                 .FindAsync(id);
-            
+
             DateTime start = DateTime.Now;
 
             if (e == null)
@@ -188,7 +188,7 @@ namespace PawMates.Controllers
             {
                 ModelState
                     .AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
-            } 
+            }
 
             if (!ModelState.IsValid)
             {
@@ -247,6 +247,20 @@ namespace PawMates.Controllers
             {
                 return BadRequest();
             }
+            
+            var ep = ev.EventParticipants
+                .Where(ep => ep.EventId == model.Id)
+                .ToList();
+
+            
+            foreach (var item in ep)
+            {
+                if (item != null)
+                {
+                    data.EventParticipants.Remove(item);
+                }
+            }
+
 
             data.Events.Remove(ev);
 
