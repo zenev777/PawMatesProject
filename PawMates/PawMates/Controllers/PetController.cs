@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Data;
 using PawMates.Data.Models;
@@ -9,6 +10,7 @@ using static PawMates.Data.DataConstants;
 
 namespace PawMates.Controllers
 {
+	[Authorize]
     public class PetController : Controller
     {
 		private readonly ApplicationDbContext data;

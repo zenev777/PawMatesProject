@@ -13,8 +13,7 @@ namespace PawMates.Models
         [StringLength(PetNameMaxLenght, MinimumLength = PetNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = RequireErrorMessage)]
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
         public string DateOfBirth { get; set; } = string.Empty;

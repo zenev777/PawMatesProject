@@ -18,9 +18,8 @@ namespace PawMates.Data.Models
         [Comment("Pet's name")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [Comment("Pet's image")]
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
 
         [Required]
         [Comment("Pet's birthday")]

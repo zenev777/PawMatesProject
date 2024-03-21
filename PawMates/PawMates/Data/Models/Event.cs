@@ -19,7 +19,7 @@ namespace PawMates.Data.Models
 
         [MaxLength(EventDescriptionMaxLenght)]
         [Comment("Event description")]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         [Required]
         [MaxLength(EventLocationMaxLenght)]
