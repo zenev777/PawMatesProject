@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Models.PetViewModels;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Models;
-using PawMates.Models;
 using System.Globalization;
 using System.Security.Claims;
 using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Controllers
 {
-	[Authorize]
+    [Authorize]
     public class PetController : Controller
     {
 		private readonly ApplicationDbContext data;

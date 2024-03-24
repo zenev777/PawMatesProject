@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Contracts.EventInterface;
+using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data;
+using PawMates.Infrastructure.Data.Common;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,6 +12,10 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection service)
         {
+            service.AddLogging();
+
+            service.AddScoped<IEventService, EventService>();
+
             return service;
         }
 
@@ -18,6 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            services.AddScoped<IRepository, Repository>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -33,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
             return services;
         }
 
