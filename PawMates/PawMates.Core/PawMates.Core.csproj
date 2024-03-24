@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PawMates.Infrastructure\PawMates.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Posts\" />
+    <Folder Include="Contracts\Pet\" />
   </ItemGroup>
 
 </Project>
