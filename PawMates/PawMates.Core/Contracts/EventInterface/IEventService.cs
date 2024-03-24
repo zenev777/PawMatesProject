@@ -13,6 +13,8 @@ namespace PawMates.Core.Contracts.EventInterface
 
         Task<IEnumerable<EventInfoViewModel>> GetAllEventsAsync();
 
+        Task<bool> CreateEventAsync(EventFormViewModel model, string userId);
 
+        Task<bool> EditEventAsync();
     }
 }
