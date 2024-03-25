@@ -2,6 +2,7 @@
 using PawMates.Core.Contracts.PetInterface;
 using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
+using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
@@ -11,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Core.Services.PetService
 {
@@ -60,14 +62,39 @@ namespace PawMates.Core.Services.PetService
             throw new NotImplementedException();
         }
 
-        public Task<int> EditPetAsync(int eventId, PetFormViewModel model)
+        public async Task<int> EditPetAsync(int petId, PetFormViewModel model)
         {
-            throw new NotImplementedException();
+            var petToEdit = await repository.GetByIdAsync<Pet>(petId);
+
+            DateTime birth = DateTime.Now;
+
+            if (!DateTime.TryParseExact(model.DateOfBirth,
+            DateOfBirthFormat,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out birth))
+            {
+                return -1;
+            }
+
+            petToEdit.Name = model.Name;
+            petToEdit.Breed = model.Breed;
+            petToEdit.DateOfBirth = birth;
+            petToEdit.Weight = model.Weight;
+            petToEdit.PetTypeId = model.PetTypeId;
+            petToEdit.MainColor = model.MainColor;
+            petToEdit.SecondaryColor = model.SecondaryColor;
+            petToEdit.Gender = model.Gender;
+            petToEdit.ImageUrl = model.ImageUrl;
+
+            await repository.SaveChangesAsync();
+
+            return petToEdit.Id;
         }
 
-        public Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<Pet>().AnyAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<PetInfoViewModel>> GetMyPetsAsync()
@@ -83,14 +110,25 @@ namespace PawMates.Core.Services.PetService
                 .ToListAsync();
         }
 
-        public Task<Event> PetByIdAsync(int id)
+        public async Task<Pet> PetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<Pet>()
+                .Where(e => e.Id == id).FirstAsync();
         }
 
-        public Task<bool> SameOrganiserAsync(int eventId, string currentUserId)
+        public async Task<bool> SameOwnerAsync(int petId, string currentUserId)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var pet = await repository.AllReadOnly<Pet>()
+                .Where(e => e.Id == petId)
+                .FirstOrDefaultAsync();
+
+            if (pet?.OwnerId == currentUserId)
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }
