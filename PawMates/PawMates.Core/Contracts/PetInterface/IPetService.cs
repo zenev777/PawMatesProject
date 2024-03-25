@@ -17,11 +17,11 @@ namespace PawMates.Core.Contracts.PetInterface
 
         Task<int> EditPetAsync(int eventId, PetFormViewModel model);
 
-        Task<Event> PetByIdAsync(int id);
+        Task<Pet> PetByIdAsync(int id);
 
         Task<bool> ExistsAsync(int id);
 
-        Task<bool> SameOrganiserAsync(int eventId, string currentUserId);
+        Task<bool> SameOwnerAsync(int eventId, string currentUserId);
 
         Task DeleteAsync(int eventId);
     }
