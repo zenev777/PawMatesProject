@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Core.Contracts.EventInterface;
+using PawMates.Core.Contracts.PetInterface;
+using PawMates.Core.Services.AttendanceService;
 using PawMates.Core.Services.EventService;
+using PawMates.Core.Services.PetService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 
@@ -15,6 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddLogging();
 
             service.AddScoped<IEventService, EventService>();
+            service.AddScoped<IAttendanceService, AttendanceService>();
+            service.AddScoped<IPetService, PetService>();
 
             return service;
         }
