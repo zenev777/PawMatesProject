@@ -63,78 +63,29 @@ namespace PawMates.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Join(int id)
-        {
-            var e = await data.Events
-                .Where(e => e.Id == id)
-                .Include(e => e.EventParticipants)
-                .FirstOrDefaultAsync();
-
-            if (e == null)
-            {
-                return BadRequest();
-            }
-
-            string userId = GetUserId();
-
-            if (!e.EventParticipants.Any(p => p.HelperId == userId))
-            {
-                e.EventParticipants.Add(new EventParticipant()
-                {
-                    EventId = e.Id,
-                    HelperId = userId
-                });
-
-                await data.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Joined));
-        }
-
         [HttpGet]
-        public async Task<IActionResult> Joined()
+        public async Task<IActionResult> Edit(int Id)
         {
-            string userId = GetUserId();
-
-            var model = await data.EventParticipants
-                .Where(ep => ep.HelperId == userId)
-                .AsNoTracking()
-                .Select(ep => new EventInfoViewModel()
-                {
-                    Id = ep.EventId,
-                    Name = ep.Event.Name,
-                    StartsOn = ep.Event.StartsOn.ToString(EventStartDateFormat),
-                    Location = ep.Event.Location,
-                    OrganiserId = ep.Event.Organiser.UserName
-                })
-                .ToListAsync();
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var e = await data.Events
-                .FindAsync(id);
-
-            if (e == null)
+            if ((await eventService.ExistsAsync(Id)) == false)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
-            if (e.OrganiserId != GetUserId())
+            var userId = User.Id();
+            if (await eventService.SameOrganiserAsync(Id, userId) == false)
             {
-                return Unauthorized();
-            }
+                return RedirectToAction(nameof(All));
+            };
+
+            var eventModel = await eventService.EventByIdAsync(Id);
 
             var model = new EventFormViewModel()
             {
-                Name = e.Name,
-                Description = e.Description,
-                Location = e.Location,
-                StartsOn = e.StartsOn.ToString(EventStartDateFormat),
+                Id = eventModel.Id,
+                Description = eventModel.Description,
+                Location = eventModel.Location,
+                Name = eventModel.Name,
+                StartsOn = eventModel.StartsOn.ToString(EventStartDateFormat, CultureInfo.InvariantCulture),
             };
 
             return View(model);
@@ -143,43 +94,34 @@ namespace PawMates.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EventFormViewModel model, int id)
         {
-            var e = await data.Events
-                .FindAsync(id);
-
-            DateTime start = DateTime.Now;
-
-            if (e == null)
+            if (id != model.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
-            if (e.OrganiserId != GetUserId())
+            if (await eventService.ExistsAsync(model.Id) == false)
             {
-                return Unauthorized();
-            }
+                ModelState.AddModelError("", "Event does not exist");
 
-            if (!DateTime.TryParseExact(
-                model.StartsOn,
-                EventStartDateFormat,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out start))
-            {
-                ModelState
-                    .AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return View(model);
             }
 
-            e.StartsOn = start;
-            e.Name = model.Name;
-            e.Description = model.Description;
-            e.Location = model.Location;
+            if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
 
-            await data.SaveChangesAsync();
+            if (await eventService.EditEventAsync(model.Id, model) == -1)
+            {
+                ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
+
+                return View(model);
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
 
             return RedirectToAction(nameof(All));
         }
@@ -187,25 +129,23 @@ namespace PawMates.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = GetUserId();
-
-            var model = await data.Events
-                .Where(e => e.OrganiserId == userId)
-                .Where(e => e.Id == id)
-                .AsNoTracking()
-                .Select(e => new EventDeleteViewModel()
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    StartsOn = e.StartsOn,
-                })
-                .FirstOrDefaultAsync();
-
-
-            if (model == null)
+            if ((await eventService.ExistsAsync(id) == false))
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
+
+            if (await eventService.SameOrganiserAsync(id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
+
+            var eventToDelete = await eventService.EventByIdAsync(id);
+            var model = new EventDeleteViewModel()
+            {
+                Id = eventToDelete.Id,
+                Name = eventToDelete.Name,
+                StartsOn = eventToDelete.StartsOn.ToString(EventStartDateFormat, CultureInfo.InvariantCulture),
+            };
 
             return View(model);
         }
@@ -213,45 +153,19 @@ namespace PawMates.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(PetDeleteViewModel model)
         {
-            var ev = await data.Events
-                .Where(e => e.Id == model.Id)
-                .FirstOrDefaultAsync();
-
-            if (ev == null)
+            if ((await eventService.ExistsAsync(model.Id) == false))
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
-            if (ev.OrganiserId != GetUserId())
+            if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
             {
-                return BadRequest();
-            }
-            
-            var ep = data.EventParticipants
-                .Where(ep => ep.EventId == model.Id)
-                .ToList();
+                return RedirectToAction(nameof(All));
+            };
 
-            
-            foreach (var item in ep)
-            {
-                if (item != null)
-                {
-                    data.EventParticipants.Remove(item);
-                }
-            }
-
-
-            data.Events.Remove(ev);
-
-            await data.SaveChangesAsync();
+            await eventService.DeleteAsync(model.Id);
 
             return RedirectToAction(nameof(All));
-        }
-
-
-        private string GetUserId()
-        {
-            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
     }
 }

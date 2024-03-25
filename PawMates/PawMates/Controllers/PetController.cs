@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Contracts.EventInterface;
+using PawMates.Core.Contracts.PetInterface;
 using PawMates.Core.Models.PetViewModels;
+using PawMates.Core.Services.EventService;
+using PawMates.Extensions;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Models;
 using System.Globalization;
@@ -14,10 +18,12 @@ namespace PawMates.Controllers
     public class PetController : Controller
     {
 		private readonly ApplicationDbContext data;
+        private readonly IPetService petService;
 
-        public PetController(ApplicationDbContext context)
+        public PetController(ApplicationDbContext context, IPetService _petService)
         {
 			data = context;
+			petService = _petService;
         }
 
 
@@ -34,44 +40,22 @@ namespace PawMates.Controllers
 
 		[HttpPost]
 		public async Task<IActionResult> Add(PetFormViewModel model)
-		{
-			DateTime birth = DateTime.Now;
-			
+        {
+            var userId = User.Id();
 
-			if (!DateTime.TryParseExact(model.DateOfBirth, DataConstants.DateOfBirthFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out birth))
+			var result = await petService.CreatePetAsync(model, userId);
+
+			if (result == false)
 			{
 				ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid date! Format must be: {DataConstants.DateOfBirthFormat}");
 			}
 
-			
-
-			if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
 			{
 				model.PetTypes = await GetPetTypes();
 
 				return View(model);
 			}
-
-
-			var entity = new Pet()
-			{
-				Name = model.Name,
-				ImageUrl = model.ImageUrl,
-				Breed = model.Breed,
-				MainColor = model.MainColor,
-				SecondaryColor = model.SecondaryColor,
-				Weight = model.Weight,
-				Gender = model.Gender,
-				DateOfBirth = birth,
-				PetTypeId = model.PetTypeId,
-				OwnerId = GetUserId(),
-			};
-
-			//Add error massage for similar pet
-
-			await data.Pets.AddAsync(entity);
-
-			await data.SaveChangesAsync();
 
 			return RedirectToAction(nameof(All));
 		}
@@ -79,18 +63,9 @@ namespace PawMates.Controllers
 		[HttpGet]
         public async Task<IActionResult> All()
         {
-            var pets = await data.Pets
-                .AsNoTracking()
-				.Where(p=>p.OwnerId == GetUserId())
-                .Select(p => new PetInfoViewModel()
-				{
-					Name= p.Name,
-					ImageUrl= p.ImageUrl,
-					Id = p.Id,
-				})
-                .ToListAsync();
+            var model = await petService.GetMyPetsAsync();
 
-            return View(pets);
+            return View(model);
         }
 
         [HttpGet]
