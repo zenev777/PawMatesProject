@@ -152,7 +152,7 @@ namespace PawMates.Controllers
 				Weight = pet.Weight,
 			};
 
-			model.PetTypes = await petService.GetPetTypes();
+			model.PetTypes =await petService.GetPetTypes();
 
 			return View(model);
 		}

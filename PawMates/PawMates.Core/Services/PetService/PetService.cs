@@ -155,14 +155,16 @@ namespace PawMates.Core.Services.PetService
             return result;
         }
 
+
         async Task<IEnumerable<PetTypesViewModel>> IPetService.GetPetTypes()
         {
             return await repository
-                .AllReadOnly<PetTypesViewModel>()
-                .Select(t => new PetTypesViewModel
+                .AllReadOnly<PetType>()
+                .OrderBy(c => c.Name)
+                .Select(c => new PetTypesViewModel()
                 {
-                    Id = t.Id,
-                    Name = t.Name
+                    Id = c.Id,
+                    Name = c.Name
                 })
                 .ToListAsync();
         }

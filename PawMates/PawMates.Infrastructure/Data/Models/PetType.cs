@@ -15,6 +15,6 @@ namespace PawMates.Infrastructure.Data.Models
         public string Name { get; set; } = string.Empty;
 
         [Comment("List of pets")]
-        public List<Pet> Pets { get; set; } = new List<Pet>();
+        public List<Pet> Pets { get; set; }
     }
 }
