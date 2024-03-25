@@ -150,20 +150,20 @@ namespace PawMates.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var pet = await data.Pets
-				.FindAsync(id);
+            if ((await petService.ExistsAsync(id)) == false)
+            {
+                return RedirectToAction(nameof(All));
+            }
 
-			if (pet == null)
-			{
-				return BadRequest();
-			}
+            var userId = User.Id();
+            if (await petService.SameOwnerAsync(id, userId) == false)
+            {
+                return Unauthorized();
+            };
 
-			if (pet.OwnerId != GetUserId())
-			{
-				return Unauthorized();
-			}
+            var pet = await petService.PetByIdAsync(id);
 
-			var model = new PetFormViewModel()
+            var model = new PetFormViewModel()
 			{
 				Name = pet.Name,
 				Breed = pet.Breed,
@@ -184,53 +184,37 @@ namespace PawMates.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(PetFormViewModel model, int id)
 		{
-			var pet = await data.Pets
-				.FindAsync(id);
+            if (id != model.Id)
+            {
+                return RedirectToAction(nameof(All));
+            }
 
-			if (pet == null)
-			{
-				return BadRequest();
-			}
+            if (await petService.ExistsAsync(model.Id) == false)
+            {
+                ModelState.AddModelError("", "Pet does not exist");
 
-			if (pet.OwnerId != GetUserId())
-			{
-				return Unauthorized();
-			}
+                return View(model);
+            }
 
-			DateTime birth = DateTime.Now;
+            if (await petService.SameOwnerAsync(model.Id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
 
-			if (!DateTime.TryParseExact(
-				model.DateOfBirth,
-				DateOfBirthFormat,
-				CultureInfo.InvariantCulture,
-				DateTimeStyles.None,
-				out birth))
-			{
-				ModelState
-					.AddModelError(nameof(model.DateOfBirth), $"Invalid date! Format must be: {DateOfBirthFormat}");
-			}
+            if (await petService.EditPetAsync(model.Id, model) == -1)
+            {
+                ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be:{DateOfBirthFormat}");
 
-			if (!ModelState.IsValid)
-			{
-				model.PetTypes = await GetPetTypes();
+                return View(model);
+            }
 
-				return View(model);
-			}
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
 
-			pet.Name = model.Name;
-			pet.Breed = model.Breed;
-			pet.DateOfBirth = birth;
-			pet.Weight = model.Weight;
-			pet.PetTypeId = model.PetTypeId;
-			pet.MainColor = model.MainColor;
-			pet.SecondaryColor = model.SecondaryColor;
-			pet.Gender = model.Gender;
-			pet.ImageUrl = model.ImageUrl;
-
-			await data.SaveChangesAsync();
-
-			return RedirectToAction(nameof(All));
-		}
+            return RedirectToAction(nameof(All));
+        }
 
 		private string GetUserId()
 		{
