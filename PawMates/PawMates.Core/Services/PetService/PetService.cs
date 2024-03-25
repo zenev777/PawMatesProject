@@ -6,7 +6,7 @@ using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
-using System;
+using PawMates.Core.Models.PetViewModels;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -57,9 +57,12 @@ namespace PawMates.Core.Services.PetService
             return true;
         }
 
-        public Task DeleteAsync(int eventId)
+        public async Task DeleteAsync(int petId)
         {
-            throw new NotImplementedException();
+            var petToDelete = await repository.GetByIdAsync<Pet>(petId);
+            repository.Delete(petToDelete);
+
+            await repository.SaveChangesAsync();
         }
 
         public async Task<int> EditPetAsync(int petId, PetFormViewModel model)
@@ -110,6 +113,27 @@ namespace PawMates.Core.Services.PetService
                 .ToListAsync();
         }
 
+        public async Task<PetInfoViewModel> GetPetDetailsAsync(int petId)
+        {
+            return await repository
+                .AllReadOnly<Pet>()
+                .Where(p=>p.Id == petId)
+                .Select(p => new PetInfoViewModel()
+                {
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth.ToString(DateOfBirthFormat),
+                    ImageUrl = p.ImageUrl,
+                    PetType = p.PetType.Name,
+                    Breed = p.Breed,
+                    Gender = p.Gender,
+                    MainColor = p.MainColor,
+                    SecondaryColor = p.SecondaryColor,
+                    Weight = p.Weight,
+                    OwnerId = p.OwnerId
+                })
+                .FirstAsync();
+        }
+
         public async Task<Pet> PetByIdAsync(int id)
         {
             return await repository.AllReadOnly<Pet>()
@@ -129,6 +153,20 @@ namespace PawMates.Core.Services.PetService
             }
 
             return result;
+        }
+
+
+        async Task<IEnumerable<PetTypesViewModel>> IPetService.GetPetTypes()
+        {
+            return await repository
+                .AllReadOnly<PetType>()
+                .OrderBy(c => c.Name)
+                .Select(c => new PetTypesViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
         }
     }
 }

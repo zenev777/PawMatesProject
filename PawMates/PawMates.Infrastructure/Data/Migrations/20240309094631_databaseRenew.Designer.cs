@@ -5,15 +5,16 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PawMates.Data;
 using PawMates.Infrastructure.Data;
 
 #nullable disable
 
-namespace PawMates.Infrastructure.Data.Migrations
+namespace PawMates.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240322104219_Initial")]
-    partial class Initial
+    [Migration("20240309094631_databaseRenew")]
+    partial class databaseRenew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -226,7 +227,7 @@ namespace PawMates.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Event", b =>
+            modelBuilder.Entity("PawMates.Data.Models.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,6 +237,7 @@ namespace PawMates.Infrastructure.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)")
                         .HasComment("Event description");
@@ -265,10 +267,10 @@ namespace PawMates.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrganiserId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.EventParticipant", b =>
+            modelBuilder.Entity("PawMates.Data.Models.EventParticipant", b =>
                 {
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -280,75 +282,10 @@ namespace PawMates.Infrastructure.Data.Migrations
 
                     b.HasIndex("HelperId");
 
-                    b.ToTable("EventParticipants");
+                    b.ToTable("EventParticipant");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Pet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Pet identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Breed")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)")
-                        .HasComment("Pet's breed");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2")
-                        .HasComment("Pet's birthday");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int")
-                        .HasComment("Pet's gender");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Pet's image");
-
-                    b.Property<string>("MainColor")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasComment("Pet's main color");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasComment("Pet's name");
-
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PetTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SecondaryColor")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasComment("Pet's second color");
-
-                    b.Property<double>("Weight")
-                        .HasMaxLength(500)
-                        .HasColumnType("float")
-                        .HasComment("Pet's weight");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("PetTypeId");
-
-                    b.ToTable("Pets");
-                });
-
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.PetType", b =>
+            modelBuilder.Entity("PawMates.Data.Models.PetType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -371,7 +308,7 @@ namespace PawMates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PetTypes");
+                    b.ToTable("PetType");
 
                     b.HasData(
                         new
@@ -416,43 +353,6 @@ namespace PawMates.Infrastructure.Data.Migrations
                             Description = "",
                             Name = "Reptiles"
                         });
-                });
-
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Post identifier");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CreatorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(56)
-                        .HasColumnType("nvarchar(56)")
-                        .HasComment("Post Description");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Post ImageUrl");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("Post Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -506,7 +406,7 @@ namespace PawMates.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Event", b =>
+            modelBuilder.Entity("PawMates.Data.Models.Event", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Organiser")
                         .WithMany()
@@ -517,9 +417,9 @@ namespace PawMates.Infrastructure.Data.Migrations
                     b.Navigation("Organiser");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.EventParticipant", b =>
+            modelBuilder.Entity("PawMates.Data.Models.EventParticipant", b =>
                 {
-                    b.HasOne("PawMates.Infrastructure.Data.Models.Event", "Event")
+                    b.HasOne("PawMates.Data.Models.Event", "Event")
                         .WithMany("EventParticipants")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -536,37 +436,7 @@ namespace PawMates.Infrastructure.Data.Migrations
                     b.Navigation("Helper");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Pet", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PawMates.Infrastructure.Data.Models.PetType", "PetType")
-                        .WithMany()
-                        .HasForeignKey("PetTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-
-                    b.Navigation("PetType");
-                });
-
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Post", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Creator");
-                });
-
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Event", b =>
+            modelBuilder.Entity("PawMates.Data.Models.Event", b =>
                 {
                     b.Navigation("EventParticipants");
                 });

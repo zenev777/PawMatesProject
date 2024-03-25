@@ -24,5 +24,9 @@ namespace PawMates.Core.Contracts.PetInterface
         Task<bool> SameOwnerAsync(int eventId, string currentUserId);
 
         Task DeleteAsync(int eventId);
+
+        Task<PetInfoViewModel> GetPetDetailsAsync(int petId);
+
+        Task<IEnumerable<PetTypesViewModel>> GetPetTypes();
     }
 }

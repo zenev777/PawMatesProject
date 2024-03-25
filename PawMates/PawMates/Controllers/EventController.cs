@@ -17,12 +17,10 @@ namespace PawMates.Controllers
     [Authorize]
     public class EventController : Controller
     {
-        private readonly ApplicationDbContext data;
         private readonly IEventService eventService;
 
-        public EventController(ApplicationDbContext context, IEventService _eventService)
+        public EventController(IEventService _eventService)
         {
-            data = context;
             eventService = _eventService;
         }
 
@@ -140,12 +138,18 @@ namespace PawMates.Controllers
             };
 
             var eventToDelete = await eventService.EventByIdAsync(id);
+            
             var model = new EventDeleteViewModel()
             {
                 Id = eventToDelete.Id,
                 Name = eventToDelete.Name,
                 StartsOn = eventToDelete.StartsOn.ToString(EventStartDateFormat, CultureInfo.InvariantCulture),
             };
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
 
             return View(model);
         }

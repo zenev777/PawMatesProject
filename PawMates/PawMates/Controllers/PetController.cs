@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PetInterface;
+using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
@@ -17,12 +18,10 @@ namespace PawMates.Controllers
     [Authorize]
     public class PetController : Controller
     {
-		private readonly ApplicationDbContext data;
         private readonly IPetService petService;
 
-        public PetController(ApplicationDbContext context, IPetService _petService)
+        public PetController(IPetService _petService)
         {
-			data = context;
 			petService = _petService;
         }
 
@@ -32,7 +31,7 @@ namespace PawMates.Controllers
 		{
 			var model = new PetFormViewModel();
 
-			model.PetTypes = await GetPetTypes();
+			model.PetTypes = await petService.GetPetTypes();
 
 			return View(model);
 
@@ -52,9 +51,9 @@ namespace PawMates.Controllers
 
             if (!ModelState.IsValid)
 			{
-				model.PetTypes = await GetPetTypes();
+				model.PetTypes = await petService.GetPetTypes();
 
-				return View(model);
+                return View(model);
 			}
 
 			return RedirectToAction(nameof(All));
@@ -71,28 +70,7 @@ namespace PawMates.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await data.Pets
-                .Where(p => p.Id == id)
-                .AsNoTracking()
-                .Select(p => new PetInfoViewModel()
-                {
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth.ToString(DateOfBirthFormat),
-                    ImageUrl = p.ImageUrl,
-                    PetType = p.PetType.Name,
-                    Breed = p.Breed,
-                    Gender = p.Gender,
-					MainColor = p.MainColor,
-					SecondaryColor=p.SecondaryColor,
-					Weight = p.Weight,
-                    OwnerId = p.OwnerId
-                })
-                .FirstOrDefaultAsync();
-
-            if (model == null)
-            {
-                return BadRequest();
-            }
+            var model = await petService.GetPetDetailsAsync(id);
 
             return View(model);
         }
@@ -100,20 +78,24 @@ namespace PawMates.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = GetUserId();
+            if ((await petService.ExistsAsync(id) == false))
+            {
+                return RedirectToAction(nameof(All));
+            }
 
-            var model = await data.Pets
-                .Where(p => p.OwnerId == userId)
-                .Where(p => p.Id == id)
-                .AsNoTracking()
-                .Select(s => new PetDeleteViewModel()
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    DateOfBirth = s.DateOfBirth,
-                })
-                .FirstOrDefaultAsync();
+            if (await petService.SameOwnerAsync(id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
 
+            var petToDelete = await petService.PetByIdAsync(id);
+
+            var model = new PetDeleteViewModel()
+            {
+                Id = petToDelete.Id,
+                Name = petToDelete.Name,
+                DateOfBirth = petToDelete.DateOfBirth.ToString(DateOfBirthFormat, CultureInfo.InvariantCulture),
+            };
 
             if (model == null)
             {
@@ -126,23 +108,17 @@ namespace PawMates.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(PetDeleteViewModel model)
         {
-            var pet = await data.Pets
-                .Where(p => p.Id == model.Id)
-                .FirstOrDefaultAsync();
-
-            if (pet == null)
+            if ((await petService.ExistsAsync(model.Id) == false))
             {
-                return BadRequest();
+                return RedirectToAction(nameof(All));
             }
 
-            if (pet.OwnerId != GetUserId())
+            if (await petService.SameOwnerAsync(model.Id, User.Id()) == false)
             {
-                return BadRequest();
-            }
+                return RedirectToAction(nameof(All));
+            };
 
-            data.Pets.Remove(pet);
-
-            await data.SaveChangesAsync();
+            await petService.DeleteAsync(model.Id);
 
             return RedirectToAction(nameof(All));
         }
@@ -176,7 +152,7 @@ namespace PawMates.Controllers
 				Weight = pet.Weight,
 			};
 
-			model.PetTypes = await GetPetTypes();
+			model.PetTypes =await petService.GetPetTypes();
 
 			return View(model);
 		}
@@ -216,22 +192,6 @@ namespace PawMates.Controllers
             return RedirectToAction(nameof(All));
         }
 
-		private string GetUserId()
-		{
-			return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-		}
-
-		private async Task<IEnumerable<PetTypesViewModel>> GetPetTypes()
-		{
-			return await data.PetTypes
-				.AsNoTracking()
-				.Select(t => new PetTypesViewModel
-				{
-					Id = t.Id,
-					Name = t.Name
-				})
-				.ToListAsync();
-		}
 
 	}
 }

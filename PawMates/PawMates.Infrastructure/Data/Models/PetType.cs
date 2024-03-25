@@ -14,8 +14,7 @@ namespace PawMates.Infrastructure.Data.Models
         [Comment("Type name")]
         public string Name { get; set; } = string.Empty;
 
-        [MaxLength(TypeDescriptionMaxLenght)]
-        [Comment("Type description")]
-        public string Description { get; set; } = string.Empty;
+        [Comment("List of pets")]
+        public List<Pet> Pets { get; set; }
     }
 }
