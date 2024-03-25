@@ -10,11 +10,18 @@ namespace PawMates.Core.Contracts.EventInterface
 {
     public interface IEventService
     {
+        Task<bool> CreateEventAsync(EventFormViewModel model, string userId);
 
         Task<IEnumerable<EventInfoViewModel>> GetAllEventsAsync();
 
-        Task<bool> CreateEventAsync(EventFormViewModel model, string userId);
+        Task<int> EditEventAsync(int eventId, EventFormViewModel model);
 
-        Task<bool> EditEventAsync();
+        Task<Event> EventByIdAsync(int id);
+
+        Task<bool> ExistsAsync(int id);
+
+        Task<bool> SameOrganiserAsync(int eventId, string currentUserId);
+
+        Task DeleteAsync(int eventId);
     }
 }
