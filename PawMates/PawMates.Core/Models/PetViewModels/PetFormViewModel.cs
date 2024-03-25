@@ -8,6 +8,7 @@ namespace PawMates.Core.Models.PetViewModels
 {
     public class PetFormViewModel
     {
+        public int Id { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(PetNameMaxLenght, MinimumLength = PetNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
