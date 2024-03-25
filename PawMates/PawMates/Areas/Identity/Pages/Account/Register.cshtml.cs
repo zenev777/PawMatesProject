@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PawMates.Data.Enums;
-using PawMates.Data.Models;
+using PawMates.Infrastructure.Data.Enums;
+using PawMates.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace PawMates.Areas.Identity.Pages.Account

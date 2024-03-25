@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using PawMates.Data.Models;
+using PawMates.Infrastructure.Data.Models;
 
 namespace PawMates.Areas.Identity.Pages.Account
 {
