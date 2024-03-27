@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PetInterface;
+using PawMates.Core.Contracts.PetStatusInterface;
 using PawMates.Core.Services.AttendanceService;
 using PawMates.Core.Services.EventService;
 using PawMates.Core.Services.PetService;
+using PawMates.Core.Services.PetStatusService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 
@@ -20,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IEventService, EventService>();
             service.AddScoped<IAttendanceService, AttendanceService>();
             service.AddScoped<IPetService, PetService>();
+            service.AddScoped<IPetStatusService, PetStatusService>();
 
             return service;
         }
