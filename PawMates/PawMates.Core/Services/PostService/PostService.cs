@@ -54,6 +54,11 @@ namespace PawMates.Core.Services.PostService
             await repository.SaveChangesAsync();
         }
 
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await repository.AllReadOnly<Post>().AnyAsync(p => p.Id == id);
+        }
+
         public async Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync()
         {
             return await repository
@@ -65,7 +70,29 @@ namespace PawMates.Core.Services.PostService
                 Description = p.Description,
                 ImageUrl = p.ImageUrl,
               })
+              .OrderByDescending(p => p.Id)
               .ToListAsync();
+        }
+
+        public async Task<Post> PostByIdAsync(int id)
+        {
+            return await repository.AllReadOnly<Post>()
+               .Where(p => p.Id == id).FirstAsync();
+        }
+
+        public async Task<bool> SameCreatorAsync(int postId, string currentCreatorId)
+        {
+            bool result = false;
+            var post = await repository.AllReadOnly<Post>()
+                .Where(p => p.Id == postId)
+                .FirstOrDefaultAsync();
+
+            if (post?.CreatorId == currentCreatorId)
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }
