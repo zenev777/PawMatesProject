@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PostViewModels;
@@ -25,7 +26,11 @@ namespace PawMates.Core.Services.PostService
 
         public async Task<bool> CreatePostAsync(PostFormViewModel model, string creatorId)
         {
-            if (await repository.AlreadyExistAsync<Post>(p => p.Creator.UserName == model.Creator)) throw new ApplicationException("Event already exists");
+            if (await repository.AlreadyExistAsync<Post>(
+            p => p.Creator.UserName == model.Creator 
+            && p.Description == model.Description 
+            && p.ImageUrl == model.ImageUrl)) 
+                throw new ApplicationException("Event already exists");
 
             var entity = new Post()
             {
@@ -39,6 +44,14 @@ namespace PawMates.Core.Services.PostService
             await repository.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task DeleteAsync(int postId)
+        {
+            var postToDelete = await repository.GetByIdAsync<Post>(postId);
+            repository.Delete(postToDelete);
+
+            await repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync()
