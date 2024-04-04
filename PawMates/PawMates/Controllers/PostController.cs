@@ -2,9 +2,11 @@
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.EventViewModels;
+using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
+using System.Globalization;
 
 namespace PawMates.Controllers
 {
@@ -46,6 +48,55 @@ namespace PawMates.Controllers
             {
                 return View(model);
             }
+
+            return RedirectToAction(nameof(All));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if ((await postService.ExistsAsync(id) == false))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (await postService.SameCreatorAsync(id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
+
+            var postToDelete = await postService.PostByIdAsync(id);
+
+            var model = new PostDeleteViewModel()
+            {
+                Id = postToDelete.Id,
+                ImageUrl = postToDelete.ImageUrl,
+            };
+
+            if (postToDelete == null)
+            {
+                return BadRequest();
+            }
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(PetDeleteViewModel model)
+        {
+            if ((await postService.ExistsAsync(model.Id) == false))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if (await postService.SameCreatorAsync(model.Id, User.Id()) == false)
+            {
+                return RedirectToAction(nameof(All));
+            };
+
+            await postService.DeleteAsync(model.Id);
 
             return RedirectToAction(nameof(All));
         }
