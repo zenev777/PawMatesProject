@@ -13,5 +13,7 @@ namespace PawMates.Core.Contracts.PostInterface
         Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync();
 
         Task<bool> CreatePostAsync(PostFormViewModel model, string id);
+
+        Task DeleteAsync(int postId);
     }
 }
