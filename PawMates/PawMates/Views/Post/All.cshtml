@@ -1,0 +1,36 @@
+﻿@model IEnumerable<PawMates.Core.Models.PostViewModels.PostViewInfoModel>
+@{
+    ViewBag.Title = "PawMates Feed";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var e in Model)
+    {
+        <div class="card" style="width: 26rem; height: 29rem; ">
+            <div class="card-body">
+                <h6>@e.Creator</h6>
+                <img class="card-img-top" src="https://hips.hearstapps.com/ghk.h-cdn.co/assets/16/08/gettyimages-530330473.jpg?crop=0.659xw:0.990xh;0.123xw,0.00779xh&resize=980:*" alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+                <h5 class="card-title">Description: </h5>
+                <p class="card-text">@e.Description </p>
+            </div>
+
+            @if (User.Identity.Name == e.Creator)
+            {
+                <a asp-controller="Post" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
+                <a asp-controller="Post" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+            }
+            else
+            {
+                <a class="btn btn-primary mb-2 w-100 p-3 fw-bold">Like</a>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
