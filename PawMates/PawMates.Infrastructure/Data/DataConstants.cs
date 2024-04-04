@@ -21,9 +21,6 @@
         public const int PetWeightMinLenght = 0;
 
         //Posts constants
-
-        public const int PostNameMaxLenght = 50;
-        public const int PostNameMinLenght = 2;
                          
         public const int PostDescriptionMaxLenght = 56;
         public const int PostDescriptionMinLenght = 4;                  
