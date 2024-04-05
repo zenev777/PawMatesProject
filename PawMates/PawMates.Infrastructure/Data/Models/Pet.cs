@@ -44,6 +44,10 @@ namespace PawMates.Infrastructure.Data.Models
         public Gender Gender { get; set; }
 
         [Required]
+        [Comment("Pet's status")]
+        public Status Status { get; set; }
+
+        [Required]
         [MaxLength(PetWeightMaxLenght)]
         [Comment("Pet's weight")]
         public double Weight { get; set; }

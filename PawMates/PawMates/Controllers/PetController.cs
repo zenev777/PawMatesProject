@@ -42,6 +42,8 @@ namespace PawMates.Controllers
         {
             var userId = User.Id();
 
+            //Proverka za data na rajdane
+
 			var result = await petService.CreatePetAsync(model, userId);
 
 			if (result == false)

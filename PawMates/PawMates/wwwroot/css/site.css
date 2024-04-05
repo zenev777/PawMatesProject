@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.row{
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
+}
