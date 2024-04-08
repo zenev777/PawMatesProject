@@ -109,6 +109,7 @@ namespace PawMates.Core.Services.PetService
                     Name = p.Name,
                     ImageUrl = p.ImageUrl,
                     Id = p.Id,
+                    OwnerId = p.Owner.UserName,
                 })
                 .ToListAsync();
         }
@@ -154,7 +155,6 @@ namespace PawMates.Core.Services.PetService
 
             return result;
         }
-
 
         async Task<IEnumerable<PetTypesViewModel>> IPetService.GetPetTypes()
         {
