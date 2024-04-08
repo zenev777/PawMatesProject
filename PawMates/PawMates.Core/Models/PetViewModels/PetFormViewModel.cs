@@ -14,9 +14,11 @@ namespace PawMates.Core.Models.PetViewModels
         [StringLength(PetNameMaxLenght, MinimumLength = PetNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
 
+        [Display(Name = "Image URL")]
         public string? ImageUrl { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
+        [Display(Name = "Date of birth")]
         public string DateOfBirth { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
@@ -25,9 +27,11 @@ namespace PawMates.Core.Models.PetViewModels
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Main Color")]
         public string MainColor { get; set; } = string.Empty;
 
         [StringLength(PetColorMaxLenght, MinimumLength = PetColorMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Second Color")]
         public string? SecondaryColor { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
