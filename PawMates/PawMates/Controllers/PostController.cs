@@ -5,6 +5,7 @@ using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Core.Services.EventService;
+using PawMates.Core.Services.PostService;
 using PawMates.Extensions;
 using System.Globalization;
 
@@ -22,7 +23,9 @@ namespace PawMates.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var model = await postService.GetAllPostsAsync();
+            //int pageSize = 5;
+
+            var model = await postService.GetPostsForPageAsync();
 
             return View(model);
         }
