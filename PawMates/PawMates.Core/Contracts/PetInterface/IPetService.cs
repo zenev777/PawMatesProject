@@ -28,5 +28,13 @@ namespace PawMates.Core.Contracts.PetInterface
         Task<PetInfoViewModel> GetPetDetailsAsync(int petId);
 
         Task<IEnumerable<PetTypesViewModel>> GetPetTypes();
+
+        Task<AllPetsQueryModel> AllAsync(
+            string? petType = null,
+            string? searchTerm = null,
+            int currentPage = 1,
+            int petsPerPage = 1);
+
+        Task<IEnumerable<string>> AllPetTypeNamesAsync();
     }
 }
