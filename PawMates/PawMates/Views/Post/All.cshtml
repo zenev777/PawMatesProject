@@ -9,15 +9,15 @@
 <hr />
 
 <body class="home-page">
-    <div class="text-center row">
+    <div class="text-center row" id="postContainer">
         @foreach (var p in Model)
         {
             <div class="card" style="width: 30rem; height: 30rem; align-self = center;">
                 <div class="card-body">
                     <h6>@p.Creator</h6>
-                    <img class="card-img-top" src=@p.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+                    <img class="card-img-top" src="@p.ImageUrl" alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
                     <h5 class="card-title">Description: </h5>
-                    <p class="card-text">@p.Description </p>
+                    <p class="card-text">@p.Description</p>
                 </div>
 
                 @if (User.Identity.Name == p.Creator)
@@ -31,8 +31,45 @@
             </div>
         }
     </div>
-</body>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <!-- Include jQuery -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+    <script>
+        var page = 1;
+        var pageSize = 5;
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                loadMorePosts();
+            }
+        });
+
+        function loadMorePosts() {
+            page++;
+
+            $.ajax({
+                url: '@Url.Action("All", "Post")',
+                type: 'GET',
+                data: { page: page, pageSize: pageSize },
+                success: function (data) {
+                    if (data.length > 0) {
+                        data.forEach(function (post) {
+                            var postHtml = `<div class="card" style="width: 30rem; height: 30rem; align-self = center;">
+                                                        <div class="card-body">
+                                                            <h6>${post.Creator}</h6>
+                                                            <img class="card-img-top" src="${post.ImageUrl}" alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+                                                            <h5 class="card-title">Description: </h5>
+                                                            <p class="card-text">${post.Description}</p>
+                                                        </div>
+                                                        ${User.Identity.Name == post.Creator ? `<a asp-controller="Post" asp-action="Delete" asp-route-id="${post.Id}" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>` : `<a class="btn btn-primary mb-2 w-100 p-3 fw-bold">Like</a>`}
+                                                    </div>`;
+
+                            $('#postContainer').append(postHtml);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</body>
