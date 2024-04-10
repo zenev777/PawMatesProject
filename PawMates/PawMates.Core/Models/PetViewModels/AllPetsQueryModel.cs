@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PawMates.Infrastructure.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace PawMates.Core.Models.PetViewModels
 {
     public class AllPetsQueryModel
     {
-        public int PetsPerPage { get; } = 3;
+        public int PetsPerPage { get; } = 5;
 
         public string PetType { get; init; } = null!;
 
@@ -24,6 +25,6 @@ namespace PawMates.Core.Models.PetViewModels
 
         public IEnumerable<string> PetTypes { get; set; } = null!;
 
-        public List<PetInfoViewModel> Pets { get; set; } = new List<PetInfoViewModel>();
+        public List<Pet> Pets { get; set; } = new List<Pet>();
     }
 }
