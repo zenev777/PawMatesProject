@@ -88,35 +88,34 @@ namespace PawMates.Core.Services.PostService
         //        .ToListAsync();
         //}
 
-        public async Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync()
+        public async Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync(int skip, int pageSize)
         {
             return await repository
-                  .AllReadOnly<Post>()
-                  .Select(p => new PostViewInfoModel()
-                  {
+                .AllReadOnly<Post>()
+                .OrderByDescending(p => p.Id)
+                .Skip(skip) // Skip the specified number of posts
+                .Take(pageSize) // Take the specified number of posts for the current page
+                .Select(p => new PostViewInfoModel()
+                {
                     Id = p.Id,
                     Creator = p.Creator.UserName,
                     Description = p.Description,
                     ImageUrl = p.ImageUrl,
-                  })
-                  .OrderByDescending(p => p.Id)
-                  .ToListAsync();
-
-            //int skip = (page - 1) * pageSize;
-            //return await repository
-            //                .AllReadOnly<Post>()
-            //                .OrderByDescending(p => p.Id)
-            //                .Skip(skip)
-            //                .Take(pageSize)
-            //                .Select(p => new PostViewInfoModel()
-            //                {
-            //                    Id = p.Id,
-            //                    Creator = p.Creator.UserName,
-            //                    Description = p.Description,
-            //                    ImageUrl = p.ImageUrl,
-            //                })
-            //                .ToListAsync();
+                })
+                .ToListAsync();
         }
+
+        //return await repository
+        //      .AllReadOnly<Post>()
+        //      .Select(p => new PostViewInfoModel()
+        //      {
+        //        Id = p.Id,
+        //        Creator = p.Creator.UserName,
+        //        Description = p.Description,
+        //        ImageUrl = p.ImageUrl,
+        //      })
+        //      .OrderByDescending(p => p.Id)
+        //      .ToListAsync();
 
         public async Task<Post> PostByIdAsync(int id)
         {
