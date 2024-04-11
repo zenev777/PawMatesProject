@@ -13,7 +13,7 @@ namespace PawMates.Core.Contracts.PostInterface
     {
         //Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync(int skip, int take);
 
-        public Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync();
+        public Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync(int page, int pageSize);
 
         Task<bool> CreatePostAsync(PostFormViewModel model, string id);
 
