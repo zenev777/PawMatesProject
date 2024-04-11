@@ -21,13 +21,26 @@ namespace PawMates.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1)
         {
-            //int pageSize = 5;
+            // Define the number of posts per page
+            int pageSize = 5; // Adjust this according to your needs
 
-            var model = await postService.GetPostsForPageAsync();
+            // Calculate the offset based on the page number
+            int skip = (page - 1) * pageSize;
 
-            return View(model);
+
+            var model = await postService.GetPostsForPageAsync(skip, pageSize);
+
+            if (page==1)
+            {
+                return View(model);
+            }
+            else
+            {
+                return View("~/Views/Post/PostCards.cshtml",model);
+            }
+
         }
 
 
