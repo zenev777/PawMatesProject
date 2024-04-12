@@ -22,5 +22,8 @@ namespace PawMates.Infrastructure.Data.DataConstants
 
         public const int UserRoleBgNameMaxLenght = 50;
         public const int UserRoleBgNameMinLenght = 2;
+        
+        public const int UserPhoneNumMaxLenght = 15;
+        public const int UserPhoneNumMinLenght = 2;
     }
 }
