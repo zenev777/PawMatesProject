@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +12,7 @@ namespace PawMates.Infrastructure.Data.Models
 
         [ForeignKey(nameof(HelperId))]
 
-        public IdentityUser Helper { get; set; } = null!;
+        public ApplicationUser Helper { get; set; } = null!;
 
         [Required]
         public int EventId { get; set; }

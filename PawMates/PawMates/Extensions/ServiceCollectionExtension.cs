@@ -10,6 +10,7 @@ using PawMates.Core.Services.PetService;
 using PawMates.Core.Services.PostService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
+using PawMates.Infrastructure.Data.IdentityModels;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -42,12 +43,15 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
 
             })
+            .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
             
             return services;
