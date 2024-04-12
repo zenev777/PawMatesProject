@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 
 namespace PawMates.Infrastructure.Data.DataConstants
 {
-    internal class IdentityConstants
+    public class IdentityConstants
     {
+        public const int UserNamesMaxLenght = 50;
+        public const int UserNamesMinLenght = 3;
+
+        public const int UserUserameMaxLenght = 20;
+        public const int UserUserameMinLenght = 5;
+
+        public const int UserEmailMaxLenght = 60;
+        public const int UserEmailMinLenght = 10;
+
+        public const int UserPasswordMaxLenght = 30;
+        public const int UserPasswordMinLenght = 8;
+
+        public const int UserRoleBgNameMaxLenght = 50;
+        public const int UserRoleBgNameMinLenght = 2;
     }
 }
