@@ -61,8 +61,25 @@ namespace PawMates.Controllers
 			return RedirectToAction(nameof(All));
 		}
 
-		[HttpGet]
-        public async Task<IActionResult> All()
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All([FromQuery] AllPetsQueryModel model)
+        {
+            var pets = await petService.AllAsync(
+                model.PetType,
+                model.SearchTerm,
+                model.CurrentPage,
+                model.PetsPerPage);
+
+            model.TotalPetsCount = pets.TotalPetsCount;
+            model.Pets = pets.Pets;
+            model.PetTypes = await petService.AllPetTypeNamesAsync();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyPets()
         {
             var model = await petService.GetMyPetsAsync();
 
@@ -112,17 +129,17 @@ namespace PawMates.Controllers
         {
             if ((await petService.ExistsAsync(model.Id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return RedirectToAction(nameof(MyPets));
             }
 
             if (await petService.SameOwnerAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return RedirectToAction(nameof(MyPets));
             };
 
             await petService.DeleteAsync(model.Id);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(MyPets));
         }
 
 		[HttpGet]

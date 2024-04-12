@@ -5,6 +5,7 @@ using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Core.Services.EventService;
+using PawMates.Core.Services.PostService;
 using PawMates.Extensions;
 using System.Globalization;
 
@@ -20,9 +21,17 @@ namespace PawMates.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1)
         {
-            var model = await postService.GetAllPostsAsync();
+            // Define the number of posts per page
+            int pageSize = 5; // Adjust this according to your needs
+
+            // Calculate the offset based on the page number
+            int skip = (page - 1) * pageSize;
+
+            var model = await postService.GetPostsForPageAsync(skip, pageSize);
+
+            
 
             return View(model);
         }

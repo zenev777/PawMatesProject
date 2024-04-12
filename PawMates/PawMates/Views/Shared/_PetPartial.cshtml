@@ -1,0 +1,11 @@
+﻿@model PawMates.Core.Models.PetViewModels.PetInfoViewModel
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+    </div>
+    <a asp-controller="Pet" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-controller="Pet" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
+    <a asp-controller="Pet" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+</div>

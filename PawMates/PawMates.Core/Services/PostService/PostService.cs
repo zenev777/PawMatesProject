@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Core.Services.PostService
 {
@@ -27,9 +28,9 @@ namespace PawMates.Core.Services.PostService
         public async Task<bool> CreatePostAsync(PostFormViewModel model, string creatorId)
         {
             if (await repository.AlreadyExistAsync<Post>(
-            p => p.Creator.UserName == model.Creator 
-            && p.Description == model.Description 
-            && p.ImageUrl == model.ImageUrl)) 
+            p => p.Creator.UserName == model.Creator
+            && p.Description == model.Description
+            && p.ImageUrl == model.ImageUrl))
                 throw new ApplicationException("Event already exists");
 
             var entity = new Post()
@@ -59,20 +60,46 @@ namespace PawMates.Core.Services.PostService
             return await repository.AllReadOnly<Post>().AnyAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync()
+        public async Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync(int skip, int pageSize)
         {
+            var listOfPosts = await repository
+                .AllReadOnly<Post>()
+                .Select(p => new PostViewInfoModel()
+                {
+                  Id = p.Id,
+                  Creator = p.Creator.UserName,
+                  Description = p.Description,
+                  ImageUrl = p.ImageUrl,
+                })
+                .OrderByDescending(p => p.Id)
+                .ToListAsync();
+
+            
+
+            if (listOfPosts.Count % pageSize == 0)
+            {
+                MaxPage = listOfPosts.Count / pageSize;
+            }
+            else
+            {
+                MaxPage = (listOfPosts.Count / pageSize) + 1;
+            }
+
             return await repository
-              .AllReadOnly<Post>()
-              .Select(p => new PostViewInfoModel()
-              {
-                Id = p.Id,
-                Creator = p.Creator.UserName,
-                Description = p.Description,
-                ImageUrl = p.ImageUrl,
-              })
-              .OrderByDescending(p => p.Id)
-              .ToListAsync();
+                .AllReadOnly<Post>()
+                .OrderByDescending(p => p.Id)
+                .Take(pageSize + skip) 
+                .Select(p => new PostViewInfoModel()
+                {
+                    Id = p.Id,
+                    Creator = p.Creator.UserName,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                })
+                .ToListAsync();
+
         }
+
 
         public async Task<Post> PostByIdAsync(int id)
         {

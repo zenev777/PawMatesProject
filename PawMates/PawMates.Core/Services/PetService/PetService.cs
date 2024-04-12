@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PawMates.Infrastructure.Data.DataConstants;
+using System;
 
 namespace PawMates.Core.Services.PetService
 {
@@ -23,6 +24,65 @@ namespace PawMates.Core.Services.PetService
         public PetService(IRepository _repository)
         {
             repository = _repository;
+        }
+
+        public async Task<AllPetsQueryModel> AllAsync(
+            string? petType = null, 
+            string? searchTerm = null,
+            int currentPage = 1, 
+            int petsPerPage = 1)
+        {
+            var petsToShow = repository.AllReadOnly<Pet>();
+
+            if (petType != null)
+            {
+                petsToShow = petsToShow
+                    .Where(p => p.PetType.Name == petType);
+            }
+
+            if (searchTerm != null)
+            {
+                string normalizedSearchTerm = searchTerm.ToLower();
+                petsToShow = petsToShow
+                    .Where(p => (p.Name.ToLower().Contains(normalizedSearchTerm) ||
+                                p.Breed.ToLower().Contains(normalizedSearchTerm) ||
+                                p.PetType.ToString().ToLower().Contains(normalizedSearchTerm) ||
+                                p.Gender.ToString().ToLower().Contains(normalizedSearchTerm) ||
+                                p.SecondaryColor.ToLower().Contains(normalizedSearchTerm) ||
+                                p.MainColor.ToLower().Contains(normalizedSearchTerm)));
+            }
+
+            //petsToShow = sorting switch
+            //{
+            //    HouseSorting.Price => housesToShow
+            //        .OrderBy(h => h.PricePerMonth),
+            //    HouseSorting.NotRentedFirst => housesToShow
+            //        .OrderBy(h => h.RenterId != null)
+            //        .ThenByDescending(h => h.Id),
+            //    _ => housesToShow
+            //        .OrderByDescending(h => h.Id)
+            //};
+
+            var pets = await petsToShow
+                .Skip((currentPage - 1) * petsPerPage)
+                .Take(petsPerPage)
+                .ToListAsync();
+
+            int totalPets = await petsToShow.CountAsync();
+
+            return new AllPetsQueryModel()
+            {
+                Pets = pets,
+                TotalPetsCount = totalPets
+            };
+        }
+
+        public async Task<IEnumerable<string>> AllPetTypeNamesAsync()
+        {
+            return await repository.AllReadOnly<PetType>()
+               .Select(c => c.Name)
+               .Distinct()
+               .ToListAsync();
         }
 
         public async Task<bool> CreatePetAsync(PetFormViewModel model, string userId)
@@ -109,6 +169,7 @@ namespace PawMates.Core.Services.PetService
                     Name = p.Name,
                     ImageUrl = p.ImageUrl,
                     Id = p.Id,
+                    OwnerId = p.Owner.UserName,
                 })
                 .ToListAsync();
         }
@@ -154,7 +215,6 @@ namespace PawMates.Core.Services.PetService
 
             return result;
         }
-
 
         async Task<IEnumerable<PetTypesViewModel>> IPetService.GetPetTypes()
         {

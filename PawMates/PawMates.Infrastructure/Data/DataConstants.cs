@@ -52,5 +52,7 @@
         public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters long";
         public const string RangeIntErrorMessage = "The field {0} must be between {1} and {2} characters long";
 
+
+        public static int MaxPage = 0;
     }
 }
