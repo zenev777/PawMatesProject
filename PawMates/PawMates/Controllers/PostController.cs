@@ -29,18 +29,11 @@ namespace PawMates.Controllers
             // Calculate the offset based on the page number
             int skip = (page - 1) * pageSize;
 
-
             var model = await postService.GetPostsForPageAsync(skip, pageSize);
 
-            if (page==1)
-            {
-                return View(model);
-            }
-            else
-            {
-                return View("~/Views/Post/PostCards.cshtml",model);
-            }
+            
 
+            return View(model);
         }
 
 
