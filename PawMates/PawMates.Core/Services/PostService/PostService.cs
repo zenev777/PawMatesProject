@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PawMates.Infrastructure.Data.DataConstants;
 
 namespace PawMates.Core.Services.PostService
 {
@@ -59,42 +60,35 @@ namespace PawMates.Core.Services.PostService
             return await repository.AllReadOnly<Post>().AnyAsync(p => p.Id == id);
         }
 
-        //public async Task<IEnumerable<PostViewInfoModel>> GetAllPostsAsync(int skip, int take)
-        //{
-        //    //return await repository
-        //    //  .AllReadOnly<Post>()
-        //    //  .Select(p => new PostViewInfoModel()
-        //    //  {
-        //    //    Id = p.Id,
-        //    //    Creator = p.Creator.UserName,
-        //    //    Description = p.Description,
-        //    //    ImageUrl = p.ImageUrl,
-        //    //  })
-        //    //  .OrderByDescending(p => p.Id)
-        //    //  .ToListAsync();
-
-        //    return await repository
-        //        .AllReadOnly<Post>()
-        //        .OrderByDescending(p => p.Id)
-        //        .Skip(skip) // Skip the specified number of posts
-        //        .Take(take) // Take the specified number of posts for the current page
-        //        .Select(p => new PostViewInfoModel()
-        //        {
-        //            Id = p.Id,
-        //            Creator = p.Creator.UserName,
-        //            Description = p.Description,
-        //            ImageUrl = p.ImageUrl,
-        //        })
-        //        .ToListAsync();
-        //}
-
         public async Task<IEnumerable<PostViewInfoModel>> GetPostsForPageAsync(int skip, int pageSize)
         {
+            var listOfPosts = await repository
+                .AllReadOnly<Post>()
+                .Select(p => new PostViewInfoModel()
+                {
+                  Id = p.Id,
+                  Creator = p.Creator.UserName,
+                  Description = p.Description,
+                  ImageUrl = p.ImageUrl,
+                })
+                .OrderByDescending(p => p.Id)
+                .ToListAsync();
+
+            
+
+            if (listOfPosts.Count % pageSize == 0)
+            {
+                MaxPage = listOfPosts.Count / pageSize;
+            }
+            else
+            {
+                MaxPage = (listOfPosts.Count / pageSize) + 1;
+            }
+
             return await repository
                 .AllReadOnly<Post>()
                 .OrderByDescending(p => p.Id)
-                .Skip(skip) // Skip the specified number of posts
-                .Take(pageSize) // Take the specified number of posts for the current page
+                .Take(pageSize + skip) 
                 .Select(p => new PostViewInfoModel()
                 {
                     Id = p.Id,
@@ -103,19 +97,9 @@ namespace PawMates.Core.Services.PostService
                     ImageUrl = p.ImageUrl,
                 })
                 .ToListAsync();
+
         }
 
-        //return await repository
-        //      .AllReadOnly<Post>()
-        //      .Select(p => new PostViewInfoModel()
-        //      {
-        //        Id = p.Id,
-        //        Creator = p.Creator.UserName,
-        //        Description = p.Description,
-        //        ImageUrl = p.ImageUrl,
-        //      })
-        //      .OrderByDescending(p => p.Id)
-        //      .ToListAsync();
 
         public async Task<Post> PostByIdAsync(int id)
         {
