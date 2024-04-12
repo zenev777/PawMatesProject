@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PawMates.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Models.EventViewModels
 {

@@ -1,4 +1,4 @@
-﻿namespace PawMates.Infrastructure.Data
+﻿namespace PawMates.Infrastructure.Data.DataConstants
 {
     public class DataConstants
     {
@@ -21,9 +21,9 @@
         public const int PetWeightMinLenght = 0;
 
         //Posts constants
-                         
+
         public const int PostDescriptionMaxLenght = 56;
-        public const int PostDescriptionMinLenght = 4;                  
+        public const int PostDescriptionMinLenght = 4;
 
         //Events constants
 

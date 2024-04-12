@@ -6,11 +6,10 @@ using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
-using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Models;
 using System.Globalization;
 using System.Security.Claims;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Controllers
 {
@@ -32,6 +31,7 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -40,6 +40,7 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Add(EventFormViewModel model)
         {

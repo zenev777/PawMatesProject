@@ -3,7 +3,7 @@ using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Core.Models.EventViewModels;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.AttendanceService
 {

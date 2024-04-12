@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.PostService
 {

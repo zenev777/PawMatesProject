@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Extensions;
 
 namespace PawMates.Controllers
 {
+    [Authorize]
     public class AttendanceController : Controller
     {
         private readonly IAttendanceService attendanceService;

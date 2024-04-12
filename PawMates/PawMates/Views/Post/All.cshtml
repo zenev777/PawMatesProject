@@ -50,7 +50,7 @@
                 if (isLoading) return; // If already loading, exit
                 isLoading = true; // Set loading flag
 
-                if (@PawMates.Infrastructure.Data.DataConstants.MaxPage > page - 1) {
+                if (@PawMates.Infrastructure.Data.DataConstants.DataConstants.MaxPage > page - 1) {
                     // AJAX request to fetch more posts from the server
                     $.ajax({
                         url: 'https://localhost:7181/Post/All?page=' + page,

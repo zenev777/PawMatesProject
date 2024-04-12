@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Infrastructure.Data.Enums;
+using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Infrastructure.Data.Models
 {
@@ -25,6 +26,6 @@ namespace PawMates.Infrastructure.Data.Models
 
         public string CreatorId { get; set; } =string.Empty;
         [ForeignKey(nameof(CreatorId))]
-        public IdentityUser Creator { get; set; } = null!;
+        public ApplicationUser Creator { get; set; } = null!;
     }
 }

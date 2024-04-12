@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Infrastructure.Data.Enums;
+using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Infrastructure.Data.Models
 {
@@ -44,17 +45,13 @@ namespace PawMates.Infrastructure.Data.Models
         public Gender Gender { get; set; }
 
         [Required]
-        [Comment("Pet's status")]
-        public Status Status { get; set; }
-
-        [Required]
         [MaxLength(PetWeightMaxLenght)]
         [Comment("Pet's weight")]
         public double Weight { get; set; }
 
         public string OwnerId { get; set; } = string.Empty;
         [ForeignKey(nameof(OwnerId))]
-        public IdentityUser Owner { get; set; } = null!;
+        public ApplicationUser Owner { get; set; } = null!;
 
         [Required]
         public int PetTypeId { get; set; }

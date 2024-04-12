@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Infrastructure.Data.Models
 {
@@ -36,7 +37,7 @@ namespace PawMates.Infrastructure.Data.Models
 
         [Required]
         [ForeignKey(nameof(OrganiserId))]
-        public IdentityUser Organiser { get; set; } = null!;
+        public ApplicationUser Organiser { get; set; } = null!;
 
         public ICollection<EventParticipant> EventParticipants { get; set; }
             = new List<EventParticipant>();
