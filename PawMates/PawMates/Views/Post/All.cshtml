@@ -18,6 +18,7 @@
                     <img class="card-img-top" src="@p.ImageUrl" alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
                     <h5 class="card-title">Description: </h5>
                     <p class="card-text">@p.Description</p>
+
                 </div>
 
                 @if (User.Identity.Name == p.Creator)
@@ -35,33 +36,46 @@
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        history.scrollRestoration = "manual";
+        $(window).on('beforeunload', function () {
+            $(window).scrollTop(0);
+        });
+
         $(document).ready(function () {
             let page = 2; // Track which page of data to load
-            let isLoading = false; // Flag to prevent multiple simultaneous requests
+            let isLoading = false; // Flag to prevent multiple simultaneous requests 
 
             // Function to load more posts
             function loadMorePosts() {
                 if (isLoading) return; // If already loading, exit
                 isLoading = true; // Set loading flag
 
-                // AJAX request to fetch more posts from the server
-                $.ajax({
-                    url: 'https://localhost:7181/Post/All?page=' + page,
-                    method: 'GET',
-                    success: function (response) {
-                        // Append new posts to the container
-                        //$('#postsContainer').append(response);
-                        document.getElementsByTagName('body').innerHTML = response;
-                        console.log(response)
-                        page++; // Increment page count for next request
-                        isLoading = false; // Reset loading flag
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error loading more posts:', error);
-                        isLoading = false; // Reset loading flag even on error
-                    }
-                });
+                if (@PawMates.Infrastructure.Data.DataConstants.MaxPage > page - 1) {
+                    // AJAX request to fetch more posts from the server
+                    $.ajax({
+                        url: 'https://localhost:7181/Post/All?page=' + page,
+                        method: 'GET',
+                        success: function (response) {
+
+                            const temp = new DOMParser().parseFromString(response, "text/html");
+
+                            //$('#postsContainer').append(response);
+                            document.getElementById('postsContainer').innerHTML = temp.getElementById('postsContainer').innerHTML;
+
+                            console.log(document.getElementById('postsContainer').innerHTML)
+                            page++; // Increment page count for next request
+                            isLoading = false; // Reset loading flag
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error loading more posts:', error);
+                            isLoading = false; // Reset loading flag even on error
+                        }
+                    });
+                    
+                }
             }
+            
+
 
             // Detect when user scrolls to the bottom of the page
             $(window).scroll(function () {
