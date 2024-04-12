@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Models.EventViewModels;
-using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
 using System;
@@ -10,7 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.EventService
 {

@@ -6,11 +6,10 @@ using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
-using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Models;
 using System.Globalization;
 using System.Security.Claims;
-using static PawMates.Infrastructure.Data.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Controllers
 {
