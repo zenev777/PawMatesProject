@@ -52,16 +52,6 @@ namespace PawMates.Core.Services.PetService
                                 p.MainColor.ToLower().Contains(normalizedSearchTerm)));
             }
 
-            //petsToShow = sorting switch
-            //{
-            //    HouseSorting.Price => housesToShow
-            //        .OrderBy(h => h.PricePerMonth),
-            //    HouseSorting.NotRentedFirst => housesToShow
-            //        .OrderBy(h => h.RenterId != null)
-            //        .ThenByDescending(h => h.Id),
-            //    _ => housesToShow
-            //        .OrderByDescending(h => h.Id)
-            //};
 
             var pets = await petsToShow
                 .Skip((currentPage - 1) * petsPerPage)
