@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PawMates.Core.Contracts.Admin;
+using PawMates.Core.Contracts.EventInterface;
+using PawMates.Core.Models.Admin;
 using PawMates.Core.Models.IdentityViewModels;
 using PawMates.Infrastructure.Data.IdentityModels;
 
@@ -15,14 +18,19 @@ namespace PawMates.Controllers
 
         private readonly SignInManager<ApplicationUser> signInManager;
 
+        private readonly IUserService userService;
+
+
         public UserController(
             UserManager<ApplicationUser> _userManager,
             SignInManager<ApplicationUser> _signInManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> _roleManager,
+            IUserService _userService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
-            this.roleManager = roleManager;
+            roleManager = _roleManager;
+            userService = _userService;
         }
 
         [HttpGet]
@@ -117,23 +125,58 @@ namespace PawMates.Controllers
             await signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
-        }    
-    
-        
-        public async Task<IActionResult> AddRole(string roleName)
+        }
+
+
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public async Task<IActionResult> AddRole()
+        {
+            var model = new AddRoleViewModel();
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<IActionResult> AddRole(AddRoleViewModel model)
         {
 
-            if (await roleManager.RoleExistsAsync(roleName)==false)
+            if (await roleManager.RoleExistsAsync(model.RoleName)==false)
             {
-                var role = new ApplicationRole()
-                {
-                    Name = roleName,
-                    NormalizedName = roleName.ToUpper()
-                };
+                await roleManager.CreateAsync(userService.CreateRole(model.RoleName));
+            };
 
-                await roleManager.CreateAsync(role);
-            }
-            
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public async Task<IActionResult> GiveRole()
+        {
+            var model = new UserToRoleViewModel();
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<IActionResult> GiveRole(UserToRoleViewModel model)
+        {
+
+            if (await roleManager.RoleExistsAsync(model.RoleName))
+            {
+                var user = await userManager.FindByNameAsync(model.UserName);
+
+
+
+                if (await userManager.IsInRoleAsync(user,model.RoleName)==false 
+                    && user !=null ) 
+                {
+                    await userManager.AddToRoleAsync(user,model.RoleName);
+                }
+            };
 
             return RedirectToAction("Index", "Home");
         }
