@@ -31,6 +31,7 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -39,6 +40,7 @@ namespace PawMates.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Add(EventFormViewModel model)
         {

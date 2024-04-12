@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.EventViewModels;
@@ -11,6 +12,7 @@ using System.Globalization;
 
 namespace PawMates.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPostService postService;

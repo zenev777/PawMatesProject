@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Contracts.Admin;
 using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PetInterface;
 using PawMates.Core.Contracts.PostInterface;
+using PawMates.Core.Services.Admin;
 using PawMates.Core.Services.AttendanceService;
 using PawMates.Core.Services.EventService;
 using PawMates.Core.Services.PetService;
 using PawMates.Core.Services.PostService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
+using PawMates.Infrastructure.Data.IdentityModels;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -23,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IAttendanceService, AttendanceService>();
             service.AddScoped<IPetService, PetService>();
             service.AddScoped<IPostService, PostService>();
+            service.AddScoped<IUserService, UserService>();
 
             return service;
         }
@@ -42,14 +47,23 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
 
             })
+            .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/User/Login";
+            //});
+
             return services;
         }
 
