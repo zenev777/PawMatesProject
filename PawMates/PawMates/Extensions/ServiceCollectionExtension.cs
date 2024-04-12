@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PawMates.Core.Contracts.Admin;
 using PawMates.Core.Contracts.AttendanceInterface;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PetInterface;
 using PawMates.Core.Contracts.PostInterface;
+using PawMates.Core.Services.Admin;
 using PawMates.Core.Services.AttendanceService;
 using PawMates.Core.Services.EventService;
 using PawMates.Core.Services.PetService;
@@ -24,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IAttendanceService, AttendanceService>();
             service.AddScoped<IPetService, PetService>();
             service.AddScoped<IPostService, PostService>();
+            service.AddScoped<IUserService, UserService>();
 
             return service;
         }
@@ -53,7 +57,13 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/User/Login";
+            //});
+
             return services;
         }
 
