@@ -8,6 +8,11 @@
     </div>
 
     <div>
+        <label asp-for="@Model.UserName" class="form-label-add-edit">Username</label>
+        <input asp-for="@Model.UserName" class="form-control" aria-required="true" />
+        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+    </div>
+    @* <div>
         <label asp-for="@Model.RoleId" class="form-label-add-edit">Select Role</label>
         <select asp-for="@Model.RoleId" class="form-control">
             <option disabled selected value="">Select Role...</option>
@@ -18,7 +23,7 @@
         </select>
         <span asp-validation-for="@Model.RoleId" class="text-danger"></span>
 
-    </div>
+    </div> *@
     
 
     <button type="submit" class="btn btn-primary" value="AddRole">Submit</button>
