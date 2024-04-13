@@ -67,7 +67,6 @@ namespace PawMates.Controllers
         {
             var pets = await petService.AllAsync(
                 model.PetType,
-                model.SearchTerm,
                 model.CurrentPage,
                 model.PetsPerPage);
 
