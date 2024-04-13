@@ -15,15 +15,15 @@ namespace PawMates.Core.Contracts.PetInterface
 
         Task<IEnumerable<PetInfoViewModel>> GetMyPetsAsync();
 
-        Task<int> EditPetAsync(int eventId, PetFormViewModel model);
+        Task<int> EditPetAsync(int petId, PetFormViewModel model);
 
         Task<Pet> PetByIdAsync(int id);
 
         Task<bool> ExistsAsync(int id);
 
-        Task<bool> SameOwnerAsync(int eventId, string currentUserId);
+        Task<bool> SameOwnerAsync(int petId, string currentUserId);
 
-        Task DeleteAsync(int eventId);
+        Task DeleteAsync(int petId);
 
         Task<PetInfoViewModel> GetPetDetailsAsync(int petId);
 
@@ -31,7 +31,6 @@ namespace PawMates.Core.Contracts.PetInterface
 
         Task<AllPetsQueryModel> AllAsync(
             string? petType = null,
-            string? searchTerm = null,
             int currentPage = 1,
             int petsPerPage = 1);
 
