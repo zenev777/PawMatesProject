@@ -28,7 +28,6 @@ namespace PawMates.Core.Services.PetService
 
         public async Task<AllPetsQueryModel> AllAsync(
             string? petType = null, 
-            string? searchTerm = null,
             int currentPage = 1, 
             int petsPerPage = 1)
         {
@@ -38,20 +37,7 @@ namespace PawMates.Core.Services.PetService
             {
                 petsToShow = petsToShow
                     .Where(p => p.PetType.Name == petType);
-            }
-
-            if (searchTerm != null)
-            {
-                string normalizedSearchTerm = searchTerm.ToLower();
-                petsToShow = petsToShow
-                    .Where(p => (p.Name.ToLower().Contains(normalizedSearchTerm) ||
-                                p.Breed.ToLower().Contains(normalizedSearchTerm) ||
-                                p.PetType.ToString().ToLower().Contains(normalizedSearchTerm) ||
-                                p.Gender.ToString().ToLower().Contains(normalizedSearchTerm) ||
-                                p.SecondaryColor.ToLower().Contains(normalizedSearchTerm) ||
-                                p.MainColor.ToLower().Contains(normalizedSearchTerm)));
-            }
-
+            }        
 
             var pets = await petsToShow
                 .Skip((currentPage - 1) * petsPerPage)
