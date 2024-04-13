@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using PawMates.Infrastructure.Data.IdentityModels
+@inject SignInManager<ApplicationUser>  signInManager;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -30,13 +33,22 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="All">Pets</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Add">Add Event</a>
-                        </li>
+                        </li>                     
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Attendance" asp-action="Joined">Joined Events</a>
                         </li>
+                        @if(signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Add">Add Event</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="AddRole">Add Role</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="GiveRole">Give Role</a>
+                            </li>
+                        }   
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
