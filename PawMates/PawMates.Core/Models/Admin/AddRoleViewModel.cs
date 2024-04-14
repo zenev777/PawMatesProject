@@ -12,7 +12,7 @@ namespace PawMates.Core.Models.Admin
     public class AddRoleViewModel
     {
         [Required]
-        [StringLength(UserRoleNameMaxLenght, MinimumLength = UserUserameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [StringLength(UserRoleNameMaxLenght, MinimumLength = UserRoleNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
         public string RoleName { get; set; } = string.Empty;
     }
 }
