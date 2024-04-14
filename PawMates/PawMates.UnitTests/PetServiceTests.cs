@@ -12,6 +12,7 @@ using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Enums;
 using Moq;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
+using PawMates.Infrastructure.Data.IdentityModels;
 
 namespace PawMates.UnitTests.Services
 {
@@ -26,7 +27,7 @@ namespace PawMates.UnitTests.Services
         public void Setup()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("PawMatesDb")
+                .UseInMemoryDatabase("TestDataBase")
                 .Options;
 
             context = new ApplicationDbContext(options);
@@ -52,7 +53,7 @@ namespace PawMates.UnitTests.Services
                 Gender = Gender.Male,
                 ImageUrl = "",
                 Weight = 0,
-                DateOfBirth= DateTime.Now,
+                DateOfBirth = DateTime.Now,
             });
 
             await repo.SaveChangesAsync();
@@ -69,13 +70,12 @@ namespace PawMates.UnitTests.Services
                 DateOfBirth = "01/01/2003",
                 Weight = 0
             });
-           
+
             var dbPet = await repo.GetByIdAsync<Pet>(1);
 
             Assert.That(dbPet.Name, Is.EqualTo("Argo"));
             Assert.That(dbPet.DateOfBirth.ToString(DateOfBirthFormat), Is.EqualTo("01/01/2003"));
         }
-
 
         [Test]
         public async Task TestCreatePetAsync()
@@ -83,7 +83,7 @@ namespace PawMates.UnitTests.Services
             var repo = new Repository(context);
 
             petService = new PetService(repo);
-            
+
             var userId = "user123";
 
             await petService.CreatePetAsync(new PetFormViewModel()
@@ -102,7 +102,7 @@ namespace PawMates.UnitTests.Services
 
             var dbPet = await repo.GetByIdAsync<Pet>(1);
 
-            Assert.That(dbPet.Name,Is.EqualTo("Fluffy"));
+            Assert.That(dbPet.Name, Is.EqualTo("Fluffy"));
         }
 
         [Test]
@@ -146,164 +146,330 @@ namespace PawMates.UnitTests.Services
             await petService.DeleteAsync(1);
 
 
-            Assert.That(pets.Count(),Is.EqualTo(1));
+            Assert.That(pets.Count(), Is.EqualTo(1));
+            //Assert.That(pets.A)
         }
 
+        [Test]
+        public async Task AllAsync_WithFilters_ReturnsFilteredPets()
+        {
+            var repo = new Repository(context);
 
-        //[Test]
-        //public async Task AllAsync_WithFilters_ReturnsFilteredPets()
-        //{
+            petService = new PetService(repo);
 
-        //    var cat = new PetType { Name = "Cat" };
-        //    var dog = new PetType { Name = "Dog" };
-        //    var pets = new List<Pet>
-        //    {
-        //        new Pet { Name = "Fluffy", PetType = cat, Breed = "Persian" },
-        //        new Pet { Name = "Bibby", PetType = dog, Breed = "Labrador" }
-        //    }.AsQueryable();
+            var cat = new PetType { Name = "Cat" };
+            var dog = new PetType { Name = "Dog" };
+
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetType=cat,
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg"
+            });
+            await repo.AddAsync(new Pet()
+            {
+                Id = 2,
+                Name = "Jimmy",
+                Breed = "Persi",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "sue",
+                SecondaryColor = "Brown",
+                PetTypeId = 2,
+                PetType = dog,
+                ImageUrl = "fluffy.jpg"
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await petService.AllAsync(petType: "Cat");
+
+            Assert.That(result.Pets.Count(), Is.EqualTo(1));
+            Assert.That(result.Pets.First().Name, Is.EqualTo("Fluffy"));
+        }
+
+        [Test]
+        public async Task AllPetTypeNamesAsync_ReturnsDistinctPetTypeNames()
+        {
+            var repo = new Repository(context);
+
+            petService = new PetService(repo);
+
+            var result = await petService.AllPetTypeNamesAsync();
 
 
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.AllReadOnly<Pet>())
-        //                  .Returns(pets);
+            Assert.That(result.Count(), Is.EqualTo(7));
+            Assert.That(result.Contains("Cat"));
+            Assert.That(result.Contains("Dog"));
+        }
 
-        //    var result = await petService.AllAsync(petType: "Cat");
+        [Test]
+        public async Task GetPetDetailsAsync_ValidId_ReturnsPetInfoViewModel()
+        {
+            var repo = new Repository(context);
 
+            petService = new PetService(repo);
 
-        //    //Assert.That(result.Pets.Count(), Is.EqualTo(1));
-        //    Assert.That(result.Pets.CountName.Contains("Fluffy"));
-        //}
+            var petId = 2;
+            await repo.AddAsync(new Pet()
+            {
+                Id = 2,
+                Name = "Jimmy",
+                Breed = "Persi",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "sue",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg"
+            });
 
+            await repo.SaveChangesAsync();
 
-        //[Test]
-        //public async Task AllPetTypeNamesAsync_ReturnsDistinctPetTypeNames()
-        //{
-        //    var petTypes = new List<PetType>
-        //    {
-        //        new PetType { Name = "Cat" },
-        //        new PetType { Name = "Dog" }
-        //    }.AsQueryable();
+            var pets = repo.All<Pet>();
 
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.AllReadOnly<PetType>())
-        //                  .Returns(petTypes);
+            var result = await petService.GetPetDetailsAsync(petId);
 
-        //    var result = await petService.AllPetTypeNamesAsync();
+            Assert.NotNull(result);
+            Assert.That(result.Name, Is.EqualTo("Jimmy"));
+            Assert.That(result.Breed, Is.EqualTo("Persi"));
 
-        //    string cat = "Cat";
-        //    string dog = "Dog";
+        }
 
-        //    Assert.That(result.Count(), Is.EqualTo(2));
-        //    Assert.That(result.Contains(cat));
-        //    Assert.That(result.Contains(dog));
-        //}
+        [Test]
+        public async Task ExistsAsync_ReturnsTrue()
+        {
+            var repo = new Repository(context);
 
-        //[Test]
-        //public async Task CreatePetAsync_ReturnsTrue()
-        //{
-        //    var model = new PetFormViewModel()
-        //    {
-        //        Name = "Fluffy",
-        //        Breed = "Persian",
-        //        DateOfBirth = "2019-01-01",
-        //        Weight = 5,
-        //        Gender = Gender.Male,
-        //        MainColor = "White",
-        //        SecondaryColor = "Brown",
-        //        PetTypeId = 1,
-        //        ImageUrl = "fluffy.jpg"
-        //    };
-        //    var userId = "user123";
+            petService = new PetService(repo);
 
-        //    var result = await petService.CreatePetAsync(model, userId);
+            var petId = 1;
 
-        //    Assert.IsTrue(result);
-        //}
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg"
+            });
 
-        //[Test]
-        //public async Task EditPetAsync_ValidModel_ReturnsId()
-        //{
-        //    var petId = 1;
-        //    var model = new PetFormViewModel()
-        //    {
-        //        Name = "Fluffy",
-        //        Breed = "Persian",
-        //        DateOfBirth = "2019-01-01",
-        //        Weight = 5,
-        //        Gender = Gender.Male,
-        //        MainColor = "White",
-        //        SecondaryColor = "Brown",
-        //        PetTypeId = 1,
-        //        ImageUrl = "fluffy.jpg"
-        //    };
+            await repo.SaveChangesAsync();
 
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.GetByIdAsync<Pet>(petId))
-        //                  .ReturnsAsync(new Pet { Id = petId });
+            var result = await petService.ExistsAsync(petId);
 
-        //    var result = await petService.EditPetAsync(petId, model);
+            Assert.IsTrue(result);
+        }
 
-        //    Assert.That(result, Is.EqualTo(petId));
-        //}
+        [Test]
+        public async Task PetByIdAsync_ExistingId_ReturnsPet()
+        {
+            var repo = new Repository(context);
 
-        //[Test]
-        //public async Task GetPetDetailsAsync_ValidId_ReturnsPetInfoViewModel()
-        //{
-        //    var petId = 1;
-        //    var pet = new Pet
-        //    {
-        //        Id = petId,
-        //        Name = "Fluffy",
-        //        DateOfBirth = new System.DateTime(2019, 01, 01),
-        //        ImageUrl = "fluffy.jpg",
-        //        PetType = new PetType { Name = "Cat" },
-        //        Breed = "Persian",
-        //        Gender = Gender.Male,
-        //        MainColor = "White",
-        //        SecondaryColor = "Brown",
-        //        Weight = 5,
-        //        OwnerId = "user123"
-        //    };
+            petService = new PetService(repo);
 
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.GetByIdAsync<Pet>(petId))
-        //                  .ReturnsAsync(pet);
+            var petId = 1;
 
-        //    var result = await petService.GetPetDetailsAsync(petId);
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg"
+            });
 
-        //    Assert.NotNull(result);
-        //    Assert.That(result.Name, Is.EqualTo("Fluffy"));        
-        //    Assert.That(result.Breed, Is.EqualTo("Persian"));
+            await repo.SaveChangesAsync();
 
-        //}
+            var result = await petService.PetByIdAsync(petId);
 
-        ////[Test]
-        ////public async Task DeleteAsync_ValidPetId_DeletesPet()
-        ////{
-        ////    var petId = 1;
+            Assert.IsNotNull(result);
+            Assert.That(result.Id, Is.EqualTo(petId));
+            Assert.That(result.Name, Is.EqualTo("Fluffy"));
+            Assert.That(result.ImageUrl, Is.EqualTo("fluffy.jpg"));
+        }
 
-        ////    var mockRepository = new Mock<IRepository>();
-        ////    mockRepository.Setup(repo => repo.GetByIdAsync<Pet>(petId))
-        ////                  .ReturnsAsync(new Pet { Id = petId });
+        [Test]
+        public async Task PetByIdAsync_NonExistingId_ReturnsNull()
+        {
+            var repo = new Repository(context);
 
-        ////    await petService.DeleteAsync(petId);
+            petService = new PetService(repo);
 
-        ////    mockRepository.Verify(repo => repo.Delete(It.IsAny<Pet>()), Times.Once());
-        ////}
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg"
+            });
+            await repo.SaveChangesAsync();
 
-        //[Test]
-        //public async Task ExistsAsync_ExistingPetId_ReturnsTrue()
-        //{
-        //    var petId = 1;
+            var pets = new List<Pet>().AsQueryable();
 
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.AllReadOnly<Pet>())
-        //                  .Returns(new List<Pet> { new Pet { Id = petId } }.AsQueryable());
+            var result = await petService.PetByIdAsync(1);
 
-        //    var result = await petService.ExistsAsync(petId);
+            Assert.IsTrue(!pets.Contains(result));
+        }
 
-        //    Assert.IsTrue(result);
-        //}
+        [Test]
+        public async Task GetMyPetsAsync_ReturnsOnlyOwnersPets()
+        {
+            var repo = new Repository(context);
+
+            petService = new PetService(repo);
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg",
+                Owner = user              
+            });
+            await repo.AddAsync(new Pet()
+            {
+                Id = 2,
+                Name = "Jimmy",
+                Breed = "Persi",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "sue",
+                SecondaryColor = "Brown",
+                PetTypeId = 2,
+                ImageUrl = "fluffy.jpg",
+                Owner = user
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await petService.GetMyPetsAsync();
+
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(2));
+            
+            var petInfoViewModels = result.ToList();
+
+            Assert.That(petInfoViewModels[0].Name, Is.EqualTo("Fluffy"));
+            Assert.That(petInfoViewModels[0].OwnerId, Is.EqualTo("testuser"));
+            
+            Assert.That(petInfoViewModels[1].Name, Is.EqualTo("Jimmy"));
+            Assert.That(petInfoViewModels[1].OwnerId, Is.EqualTo("testuser"));
+        }
+
+        [Test]
+        public async Task SameOwnerAsync_PetWithSameOwner_ReturnsTrue()
+        {
+            var repo = new Repository(context);
+
+            petService = new PetService(repo);
+
+            var petId = 1;
+
+            var currentUserId = "user123";
+
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg",
+                OwnerId = "user123"
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await petService.SameOwnerAsync(petId, currentUserId);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task SameOwnerAsync_PetWithDifferentOwner_ReturnsFalse()
+        {
+            var repo = new Repository(context);
+
+            petService = new PetService(repo);
+
+            var petId = 1;
+
+            var currentUserId = "user123";
+
+            await repo.AddAsync(new Pet()
+            {
+                Id = 1,
+                Name = "Fluffy",
+                Breed = "Persian",
+                DateOfBirth = DateTime.Now,
+                Weight = 5,
+                Gender = Gender.Male,
+                MainColor = "White",
+                SecondaryColor = "Brown",
+                PetTypeId = 1,
+                ImageUrl = "fluffy.jpg",
+                OwnerId = "diffuser"
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await petService.SameOwnerAsync(petId, currentUserId);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task GetPetTypes_ReturnsListOfPetTypesViewModel()
+        {
+            var repo = new Repository(context);
+
+            petService = new PetService(repo); 
+
+            var result = await petService.GetPetTypes();
+
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(7));
+        }
 
         [TearDown]
         public void TearDown()
