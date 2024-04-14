@@ -27,11 +27,11 @@ namespace PawMates.Core.Services.PostService
 
         public async Task<bool> CreatePostAsync(PostFormViewModel model, string creatorId)
         {
-            if (await repository.AlreadyExistAsync<Post>(
-            p => p.Creator.UserName == model.Creator
-            && p.Description == model.Description
-            && p.ImageUrl == model.ImageUrl))
-                throw new ApplicationException("Event already exists");
+            //if (await repository.AlreadyExistAsync<Post>(
+            //p => p.Creator.UserName == model.Creator
+            //&& p.Description == model.Description
+            //&& p.ImageUrl == model.ImageUrl))
+            //    throw new ApplicationException("Event already exists");
 
             var entity = new Post()
             {
