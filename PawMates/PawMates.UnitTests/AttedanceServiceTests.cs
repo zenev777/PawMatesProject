@@ -7,6 +7,7 @@ using PawMates.Core.Services.AttendanceService;
 using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
+using PawMates.Infrastructure.Data.IdentityModels;
 using PawMates.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -36,63 +37,191 @@ namespace PawMates.UnitTests
             context.Database.EnsureCreated();
         }
 
-        //[Test]
-        //public async Task JoinEventAsync_UserNotJoined_ReturnsTrue()
-        //{
-        //    var repo = new Repository(context);
+        [Test]
+        public async Task JoinEventAsync_UserNotJoined_ReturnsTrue()
+        {
+            var repo = new Repository(context);
+          
+            attendanceService = new AttendanceService(repo);
+          
+            var eventId = 1;
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Event()
+            {
+                Id = 1,
+                Description = "Test",
+                Location = "Test Loc",
+                Name = "Test",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+
+            var eventToAttend = repo.GetByIdAsync<Event>(1);
+
+            await repo.SaveChangesAsync();
+
+            var result = await attendanceService.JoinEventAsync(eventId, user.Id);
+
+            Assert.IsTrue(result);   
+        }
+
+        [Test]
+        public async Task JoinEventAsync_UserAlreadyJoined_ReturnsFalse()
+        {
+            var repo = new Repository(context);
+
+            attendanceService = new AttendanceService(repo);
+
+            var eventId = 1;
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Event()
+            {
+                Id = 1,
+                Description = "Test",
+                Location = "Test Loc",
+                Name = "Test",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+
+            var eventToAttend = repo.GetByIdAsync<Event>(1);
+
+            await repo.AddAsync(new EventParticipant()
+            {
+                Helper = user,
+                EventId = 1
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await attendanceService.JoinEventAsync(eventId, user.Id);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task LeaveEventAsync_UserLeavesEvent_ReturnsTrue()
+        {
+            var repo = new Repository(context);
+
+            attendanceService = new AttendanceService(repo);
+
+            var eventId = 1;
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Event()
+            {
+                Id = 1,
+                Description = "Test",
+                Location = "Test Loc",
+                Name = "Test",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+
+            var eventToAttend = repo.GetByIdAsync<Event>(1);
+
+            await repo.AddAsync(new EventParticipant()
+            {
+                Helper = user,
+                EventId = 1
+            });
+
+            await repo.SaveChangesAsync();
+
+            var result = await attendanceService.LeaveEventAsync(eventId, user.Id);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task LeaveEventAsync_UserNotJoinedEvent_ReturnsFalse()
+        {
+            var repo = new Repository(context);
+
+            attendanceService = new AttendanceService(repo);
+
+            var eventId = 1;
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Event()
+            {
+                Id = 1,
+                Description = "Test",
+                Location = "Test Loc",
+                Name = "Test",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+
+            var eventToAttend = repo.GetByIdAsync<Event>(1);
+
+            await repo.SaveChangesAsync();
+
+            var result = await attendanceService.LeaveEventAsync(eventId, user.Id);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task GetMyEventsAsync_ReturnsEventsForUser()
+        {
+            var repo = new Repository(context);
+
+            attendanceService = new AttendanceService(repo);
+
+            var user = new ApplicationUser { Id = "user123", UserName = "testuser" };
+
+            await repo.AddAsync(new Event()
+            {
+                Id = 1,
+                Description = "Test",
+                Location = "Test Loc",
+                Name = "Test",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+            await repo.AddAsync(new Event()
+            {
+                Id = 2,
+                Description = "Test 2",
+                Location = "Test Loc 222",
+                Name = "Test 222",
+                StartsOn = DateTime.Now,
+                Organiser = user
+            });
+
+            await repo.AddAsync(new EventParticipant()
+            {
+                Helper = user,
+                EventId = 1
+            });
+            await repo.AddAsync(new EventParticipant()
+            {
+                Helper = user,
+                EventId = 2
+            });
+
+            await repo.SaveChangesAsync();
             
-        //    attendanceService = new AttendanceService(repo);
-            
-            
-        //    var eventId = 1;
-        //    var userId = "user123";
+            var result = await attendanceService.GetMyEventsAsync(user.Id);
 
-        //    await repo.AddAsync(new Event()
-        //    {
-        //        Id = 1,
-        //        Description = "Test",
-        //        Location = "Test Loc",
-        //        Name = "Test",
-        //        StartsOn = DateTime.Now,
-        //        OrganiserId = userId
-        //    });
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(2));
 
-        //    await repo.AddAsync(new EventParticipant()
-        //    {
-        //        HelperId = userId,
-        //        EventId = eventId,
-        //    });
+            var eventInfoViewModels = result.ToList();
+            Assert.That(eventInfoViewModels[0].Name, Is.EqualTo("Test"));
+            Assert.That(eventInfoViewModels[0].Location, Is.EqualTo("Test Loc"));
 
-        //    await repo.SaveChangesAsync();
-
-        //    // Act
-        //    var result = await attendanceService.JoinEventAsync(eventId, userId);
-
-        //    // Assert
-        //    Assert.IsTrue(result);
-
-            
-        //}
-
-        //[Test]
-        //public async Task JoinEventAsync_UserAlreadyJoined_ReturnsFalse()
-        //{
-        //    // Arrange
-        //    var eventId = 1;
-        //    var userId = "user123";
-
-        //    var mockRepository = new Mock<IRepository>();
-        //    mockRepository.Setup(repo => repo.AlreadyExistAsync<EventParticipant>(e => e.EventId == eventId && e.HelperId == userId))
-        //                  .ReturnsAsync(true);
-
-        //    // Act
-        //    var result = await attendanceService.JoinEventAsync(eventId, userId);
-
-        //    // Assert
-        //    Assert.IsFalse(result);
-
-        //    mockRepository.Verify(repo => repo.AddAsync(It.IsAny<EventParticipant>()), Times.Never);
-        //    mockRepository.Verify(repo => repo.SaveChangesAsync(), Times.Never);
-        //}
+            Assert.That(eventInfoViewModels[1].Name, Is.EqualTo("Test 222"));
+            Assert.That(eventInfoViewModels[1].Location, Is.EqualTo("Test Loc 222"));
+        }
     }
 }
