@@ -22,7 +22,6 @@ namespace PawMates.UnitTests
     [TestFixture]
     public class PostServiceTests
     {
-        private IRepository repository;
         private IPostService postService;
         private ApplicationDbContext context;
 
@@ -285,6 +284,12 @@ namespace PawMates.UnitTests
 
             Assert.IsNotNull(result);
             Assert.That(result.Count(), Is.EqualTo(2));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            context.Dispose();
         }
     }
 }
