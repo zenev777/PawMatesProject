@@ -60,8 +60,7 @@ namespace PawMates.Controllers
 
 			return RedirectToAction(nameof(All));
 		}
-
-        [AllowAnonymous]
+       
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] AllPetsQueryModel model)
         {

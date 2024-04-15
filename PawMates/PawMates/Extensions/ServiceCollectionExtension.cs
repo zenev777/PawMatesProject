@@ -58,11 +58,11 @@ namespace Microsoft.Extensions.DependencyInjection
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //.AddCookie(options =>
-            //{
-            //    options.LoginPath = "/User/Login";
-            //});
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/User/Login";
+                options.LogoutPath = "/User/Logout";
+            });
 
             return services;
         }
