@@ -26,7 +26,7 @@ namespace PawMates.Controllers
             }
             else
             {
-                return BadRequest("Already joined event");
+                return StatusCode(404);
             }
         }
 
@@ -41,7 +41,7 @@ namespace PawMates.Controllers
             }
             else
             {
-                return BadRequest("Not joined event");
+                return StatusCode(404);
             }
         }
 
@@ -50,6 +50,12 @@ namespace PawMates.Controllers
         {
             var userId = User.Id();
             var events = await attendanceService.GetMyEventsAsync(userId);
+
+            if (events == null)
+            {
+                StatusCode(500);
+            }
+
             return View(events);
         }
     }
