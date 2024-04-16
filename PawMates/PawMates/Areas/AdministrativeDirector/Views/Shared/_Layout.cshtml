@@ -21,30 +21,18 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="All">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Add">Create Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="All">Events</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="All">Pets</a>
-                        </li>                     
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Attendance" asp-action="Joined">Joined Events</a>
-                        </li>
-                        @if(signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    <ul class="navbar-nav flex-grow-1">                      
+                        @if (signInManager.IsSignedIn(User) @* && User.IsInRole("AdministrativeDirector") *@)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Add">Add Event</a>
-                            </li>     
+                                <a class="nav-link text-dark" asp-area="AdministrativeDirector" asp-controller="Home" asp-action="AddRole">Add Role</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="AdministrativeDirector" asp-controller="Home" asp-action="GiveRole">Give Role</a>
+                            </li>
                         }   
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <partial name="_AdministrativeDirectorPartial" />
                 </div>
             </div>
         </nav>
@@ -57,7 +45,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - PawMates
+            &copy; 2024 - PawMates <span class="text-danger">This area is only for AdministrativeDirectors</span>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

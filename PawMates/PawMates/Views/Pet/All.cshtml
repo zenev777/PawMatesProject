@@ -47,6 +47,27 @@
         Model.PetsPerPage);
 }
 
+
+@if (!Model.Pets.Any())
+{
+    <h2 class="text-center">No pets found by the given criteria!</h2>
+}
+
+<div class="row">
+    @foreach (var pet in Model.Pets)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src=@pet.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+            <div class="card-body">
+                <h5 class="card-title">@pet.Name</h5>
+            </div>
+
+            <a asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-success">Details</a>
+
+        </div>
+    }
+</div>
+
 <div class="row mb-5">
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
@@ -71,24 +92,4 @@
            asp-route-category="@Model.PetType"
            asp-route-searchTerm="@Model.SearchTerm">>></a>
     </div>
-</div>
-
-@if (!Model.Pets.Any())
-{
-    <h2 class="text-center">No pets found by the given criteria!</h2>
-}
-
-<div class="row">
-    @foreach (var pet in Model.Pets)
-    {
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src=@pet.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
-            <div class="card-body">
-                <h5 class="card-title">@pet.Name</h5>
-            </div>
-
-            <a asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-success">Details</a>
-
-        </div>
-    }
 </div>
