@@ -18,11 +18,6 @@ namespace PawMates.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
         {
@@ -34,6 +29,11 @@ namespace PawMates.Controllers
             if (statusCode == 500)
             {
                 return View("Error500");
+            }
+
+            if (statusCode == 403)
+            {
+                return View("Error403");
             }
 
             return View();

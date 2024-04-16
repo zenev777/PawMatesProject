@@ -1,19 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.PetInterface;
-using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
-using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data.Common;
-using PawMates.Infrastructure.Data.Models;
-using PawMates.Core.Models.PetViewModels;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
-using System;
 using PawMates.Infrastructure.Data.DataConstants;
+using PawMates.Infrastructure.Data.Models;
+using System.Globalization;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.PetService
 {
@@ -63,11 +55,20 @@ namespace PawMates.Core.Services.PetService
 
         public async Task<bool> CreatePetAsync(PetFormViewModel model, string userId)
         {
-            if (await repository.AlreadyExistAsync<Pet>(e => e.Name == model.Name)) throw new ApplicationException("Event already exists");
+            if (await repository.AlreadyExistAsync<Pet>(p => p.Name == model.Name && p.OwnerId == userId))
+            {
+                return false;
+            }
 
             DateTime birth = DateTime.Now;
 
             if (!DateTime.TryParseExact(model.DateOfBirth, DataConstants.DateOfBirthFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out birth))
+            {
+                return false;
+            }
+
+            //return pop up massage in future
+            if (birth>DateTime.Now)
             {
                 return false;
             }
@@ -112,6 +113,12 @@ namespace PawMates.Core.Services.PetService
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
             out birth))
+            {
+                return -1;
+            }
+
+            //return pop up massage in future
+            if (birth > DateTime.Now)
             {
                 return -1;
             }
