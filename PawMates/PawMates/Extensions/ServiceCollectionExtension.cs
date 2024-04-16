@@ -66,13 +66,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddAuthorization(options =>
             {
-
                 options.AddPolicy("AdministrativeDirector",
                     authBuilder =>
                     {
                         authBuilder.RequireRole("AdministrativeDirector");
                     });
-
             });
 
             services.ConfigureApplicationCookie(options =>
