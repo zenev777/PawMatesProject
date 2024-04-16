@@ -24,4 +24,9 @@
     <ProjectReference Include="..\PawMates.Core\PawMates.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\AdministrativeDirector\Data\" />
+    <Folder Include="Areas\AdministrativeDirector\Models\" />
+  </ItemGroup>
+
 </Project>
