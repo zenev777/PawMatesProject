@@ -85,8 +85,12 @@ namespace PawMates.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)     
         {
+            if (await petService.ExistsAsync(id) == false)
+            {
+                return StatusCode(404);
+            }
             var model = await petService.GetPetDetailsAsync(id);
 
             return View(model);
@@ -145,7 +149,7 @@ namespace PawMates.Controllers
 		{
             if ((await petService.ExistsAsync(id)) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             var userId = User.Id();
@@ -179,7 +183,7 @@ namespace PawMates.Controllers
 		{
             if (id != model.Id)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             if (await petService.ExistsAsync(model.Id) == false)
