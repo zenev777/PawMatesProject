@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.Admin;
 using PawMates.Core.Contracts.AttendanceInterface;
@@ -29,6 +30,11 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IPostService, PostService>();
             service.AddScoped<IUserService, UserService>();
 
+            service.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
+
             return service;
         }
 
@@ -57,6 +63,17 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("AdministrativeDirector",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("AdministrativeDirector");
+                    });
+
+            });
 
             services.ConfigureApplicationCookie(options =>
             {
