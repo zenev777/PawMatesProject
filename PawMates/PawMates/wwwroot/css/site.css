@@ -117,7 +117,21 @@ body {
         font-size: 14px;
         text-decoration: none;
         text-transform: uppercase;
-        background: #18e06f;
+        background: #55E05F;
+        display: inline-block;
+        padding: 15px 30px;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+
+    #notauth a {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 14px;
+        text-decoration: none;
+        text-transform: uppercase;
+        background: #E6514A;
         display: inline-block;
         padding: 15px 30px;
         border-radius: 5px;
