@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PawMates.Infrastructure.Data.IdentityModels
-@inject SignInManager<ApplicationUser>  signInManager;
+@inject SignInManager<ApplicationUser> signInManager;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,16 +33,16 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="All">Pets</a>
-                        </li>                     
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Attendance" asp-action="Joined">Joined Events</a>
                         </li>
-                        @if(signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Add">Add Event</a>
-                            </li>      
-                        }   
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -57,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - PawMates - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - PawMates
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
