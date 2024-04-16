@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PetInterface;
-using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
-using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
-using PawMates.Infrastructure.Data.DataConstants;
-using PawMates.Infrastructure.Data.Models;
 using System.Globalization;
-using System.Security.Claims;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Controllers
@@ -48,7 +41,7 @@ namespace PawMates.Controllers
 
 			if (result == false)
 			{
-				ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid date! Format must be: {DataConstants.DateOfBirthFormat}");
+                return StatusCode(500);
 			}
 
             if (!ModelState.IsValid)
@@ -101,12 +94,12 @@ namespace PawMates.Controllers
         {
             if ((await petService.ExistsAsync(id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             if (await petService.SameOwnerAsync(id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             var petToDelete = await petService.PetByIdAsync(id);
@@ -120,7 +113,7 @@ namespace PawMates.Controllers
 
             if (model == null)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
 
             return View(model);
@@ -131,13 +124,18 @@ namespace PawMates.Controllers
         {
             if ((await petService.ExistsAsync(model.Id) == false))
             {
-                return RedirectToAction(nameof(MyPets));
+                return StatusCode(404);
             }
 
             if (await petService.SameOwnerAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(MyPets));
+                return StatusCode(403);
             };
+
+            if (model == null)
+            {
+                return StatusCode(500);
+            }
 
             await petService.DeleteAsync(model.Id);
 
@@ -155,10 +153,15 @@ namespace PawMates.Controllers
             var userId = User.Id();
             if (await petService.SameOwnerAsync(id, userId) == false)
             {
-                return Unauthorized();
+                return StatusCode(403);
             };
 
             var pet = await petService.PetByIdAsync(id);
+
+            if (pet == null)
+            {
+                return StatusCode(404);
+            }
 
             var model = new PetFormViewModel()
 			{
@@ -188,21 +191,18 @@ namespace PawMates.Controllers
 
             if (await petService.ExistsAsync(model.Id) == false)
             {
-                ModelState.AddModelError("", "Pet does not exist");
-
-                return View(model);
+                return StatusCode(404);
             }
 
             if (await petService.SameOwnerAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             if (await petService.EditPetAsync(model.Id, model) == -1)
             {
-                ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be:{DateOfBirthFormat}");
-
-                return View(model);
+                //ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be:{DateOfBirthFormat}");
+                return StatusCode(500);
             }
 
             if (ModelState.IsValid == false)
