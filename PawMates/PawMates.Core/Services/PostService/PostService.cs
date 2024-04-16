@@ -1,17 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PawMates.Core.Contracts.PostInterface;
-using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.PostService
@@ -27,11 +18,12 @@ namespace PawMates.Core.Services.PostService
 
         public async Task<bool> CreatePostAsync(PostFormViewModel model, string creatorId)
         {
-            //if (await repository.AlreadyExistAsync<Post>(
-            //p => p.Creator.UserName == model.Creator
-            //&& p.Description == model.Description
-            //&& p.ImageUrl == model.ImageUrl))
-            //    throw new ApplicationException("Event already exists");
+            if (await repository.AlreadyExistAsync<Post>(
+            p => p.CreatorId == creatorId
+            && p.ImageUrl == model.ImageUrl))
+            {
+                return false;
+            }
 
             var entity = new Post()
             {
@@ -73,8 +65,6 @@ namespace PawMates.Core.Services.PostService
                 })
                 .OrderByDescending(p => p.Id)
                 .ToListAsync();
-
-            
 
             if (listOfPosts.Count % pageSize == 0)
             {

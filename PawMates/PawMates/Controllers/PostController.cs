@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Contracts.PostInterface;
-using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
-using PawMates.Core.Services.EventService;
-using PawMates.Core.Services.PostService;
 using PawMates.Extensions;
-using System.Globalization;
 
 namespace PawMates.Controllers
 {
@@ -31,13 +26,16 @@ namespace PawMates.Controllers
             // Calculate the offset based on the page number
             int skip = (page - 1) * pageSize;
 
+            //Try to extend this varaebles
             var model = await postService.GetPostsForPageAsync(skip, pageSize);
 
-            
+            if (model == null)
+            {
+                return StatusCode(404); 
+            }
 
             return View(model);
         }
-
 
         [HttpGet]
         public IActionResult Add()
@@ -46,7 +44,6 @@ namespace PawMates.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Add(PostFormViewModel model)
@@ -57,24 +54,28 @@ namespace PawMates.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return StatusCode(500);
+            }
+
+            if (result == false)
+            {
+                return StatusCode(500);
             }
 
             return RedirectToAction(nameof(All));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             if ((await postService.ExistsAsync(id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(500);
             }
 
             if (await postService.SameCreatorAsync(id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             var postToDelete = await postService.PostByIdAsync(id);
@@ -87,9 +88,8 @@ namespace PawMates.Controllers
 
             if (postToDelete == null)
             {
-                return BadRequest();
+                return StatusCode(404);
             }
-
 
             return View(model);
         }
@@ -99,12 +99,12 @@ namespace PawMates.Controllers
         {
             if ((await postService.ExistsAsync(model.Id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(500);
             }
 
             if (await postService.SameCreatorAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             await postService.DeleteAsync(model.Id);
