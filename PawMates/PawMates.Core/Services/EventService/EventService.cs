@@ -24,7 +24,7 @@ namespace PawMates.Core.Services.EventService
 
         public async Task<bool> CreateEventAsync(EventFormViewModel model, string userId)
         {
-            if (await repository.AlreadyExistAsync<Event>(e=>e.Name == model.Name)) throw new ApplicationException("Event already exists");
+            if (await repository.AlreadyExistAsync<Event>(e => e.Name == model.Name)) throw new ApplicationException("Event already exists");
 
             DateTime start = DateTime.Now;
 
@@ -36,7 +36,12 @@ namespace PawMates.Core.Services.EventService
                 out start))
             {
                 return false;
-            } 
+            }
+
+            if (start < DateTime.Now)
+            {
+                return false;
+            }
 
             var entity = new Event()
             {
@@ -56,33 +61,43 @@ namespace PawMates.Core.Services.EventService
 
         public async Task<int> EditEventAsync(int eventId, EventFormViewModel model)
         {
-                var eventToEdit = await repository.GetByIdAsync<Event>(eventId);
+            var eventToEdit = await repository.GetByIdAsync<Event>(eventId);
 
-                DateTime start = DateTime.Now;
+            if (eventToEdit == null)
+            {
+                return -1;
+            }
 
-                if (!DateTime.TryParseExact(model.StartsOn,
-                EventStartDateFormat,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out start))
-                {
-                    return -1;
-                }
+            DateTime start = DateTime.Now;
 
-                eventToEdit.Name = model.Name;
-                eventToEdit.Location = model.Location;
-                eventToEdit.StartsOn = start;
-                eventToEdit.Description = model.Description;
-                eventToEdit.Id = model.Id;
+            if (!DateTime.TryParseExact(model.StartsOn,
+            EventStartDateFormat,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out start))
+            {
+                return -1;
+            }
 
-                await repository.SaveChangesAsync();
+            if (start < DateTime.Now)
+            {
+                return -1;
+            }
 
-                return eventToEdit.Id;
+            eventToEdit.Name = model.Name;
+            eventToEdit.Location = model.Location;
+            eventToEdit.StartsOn = start;
+            eventToEdit.Description = model.Description;
+            eventToEdit.Id = model.Id;
+
+            await repository.SaveChangesAsync();
+
+            return eventToEdit.Id;
         }
 
         public async Task<IEnumerable<EventInfoViewModel>> GetAllEventsAsync()
         {
-            return  await repository
+            return await repository
                .AllReadOnly<Event>()
                .Select(e => new EventInfoViewModel()
                {

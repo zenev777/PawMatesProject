@@ -51,7 +51,8 @@ namespace PawMates.Controllers
 
             if (result == false)
             {
-                ModelState.AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
+                //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
+                return StatusCode(500);
             }
 
             if (!ModelState.IsValid)
@@ -67,16 +68,21 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(Id)) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             var userId = User.Id();
             if (await eventService.SameOrganiserAsync(Id, userId) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             var eventModel = await eventService.EventByIdAsync(Id);
+
+            if (eventModel==null)
+            {
+                return StatusCode(500);
+            }
 
             var model = new EventFormViewModel()
             {
@@ -95,26 +101,23 @@ namespace PawMates.Controllers
         {
             if (id != model.Id)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             if (await eventService.ExistsAsync(model.Id) == false)
             {
-                ModelState.AddModelError("", "Event does not exist");
-
-                return View(model);
+                return StatusCode(404);
             }
 
             if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             if (await eventService.EditEventAsync(model.Id, model) == -1)
             {
-                ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
-
-                return View(model);
+                //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
+                return StatusCode(500);
             }
 
             if (ModelState.IsValid == false)
@@ -130,16 +133,21 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             if (await eventService.SameOrganiserAsync(id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
 
             var eventToDelete = await eventService.EventByIdAsync(id);
             
+            if (eventToDelete == null)
+            {
+                return StatusCode(500);
+            }
+
             var model = new EventDeleteViewModel()
             {
                 Id = eventToDelete.Id,
@@ -149,7 +157,7 @@ namespace PawMates.Controllers
 
             if (model == null)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
 
             return View(model);
@@ -160,13 +168,18 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(model.Id) == false))
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(404);
             }
 
             if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
             {
-                return RedirectToAction(nameof(All));
+                return StatusCode(403);
             };
+
+            if (model == null)
+            {
+                return StatusCode(500);
+            }
 
             await eventService.DeleteAsync(model.Id);
 
