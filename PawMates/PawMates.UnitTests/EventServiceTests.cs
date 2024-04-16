@@ -25,7 +25,6 @@ namespace PawMates.UnitTests
     [TestFixture]
     public class EventServiceTests
     {
-        private readonly IRepository repository;
         private IEventService eventService;
         private ApplicationDbContext context;
 
