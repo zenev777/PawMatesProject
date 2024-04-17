@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static PawMates.Infrastructure.Data.DataConstants.IdentityConstants;
+﻿using System.ComponentModel.DataAnnotations;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.IdentityConstants;
 
 namespace PawMates.Core.Models.IdentityViewModels
 {
@@ -13,15 +8,19 @@ namespace PawMates.Core.Models.IdentityViewModels
     {
         [Required]
         [StringLength(UserUserameMaxLenght, MinimumLength = UserUserameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Username")]
         public string UserName { get; set; } = null!;
 
         [StringLength(UserNamesMaxLenght, MinimumLength = UserNamesMinLenght,ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "First Name")]
         public string? FirstName { get; set; } = null!;
 
         [StringLength(UserNamesMaxLenght, MinimumLength = UserNamesMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Last Name")]
         public string? LastName { get; set; } = null!;
 
         [StringLength(UserPhoneNumMaxLenght, MinimumLength = UserPhoneNumMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Phone Number")]
         public string? PhoneNumber { get; set; } = null!;
 
         [Required]
@@ -36,6 +35,7 @@ namespace PawMates.Core.Models.IdentityViewModels
 
         [Compare(nameof(Password))]
         [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; } = null!;
     }
 }

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using PawMates.Core.Contracts.Admin;
-using PawMates.Core.Contracts.EventInterface;
-using PawMates.Core.Models.Admin;
 using PawMates.Core.Models.IdentityViewModels;
 using PawMates.Infrastructure.Data.IdentityModels;
 

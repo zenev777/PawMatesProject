@@ -53,24 +53,24 @@ namespace PawMates.Core.Services.PetService
                .ToListAsync();
         }
 
-        public async Task<bool> CreatePetAsync(PetFormViewModel model, string userId)
+        public async Task<int> CreatePetAsync(PetFormViewModel model, string userId)
         {
             if (await repository.AlreadyExistAsync<Pet>(p => p.Name == model.Name && p.OwnerId == userId))
             {
-                return false;
+                return 0;
             }
 
             DateTime birth = DateTime.Now;
 
             if (!DateTime.TryParseExact(model.DateOfBirth, DataConstants.DateOfBirthFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out birth))
             {
-                return false;
+                return -1;
             }
 
             //return pop up massage in future
             if (birth>DateTime.Now)
             {
-                return false;
+                return -1;
             }
 
             var entity = new Pet()
@@ -91,7 +91,7 @@ namespace PawMates.Core.Services.PetService
 
             await repository.SaveChangesAsync();
 
-            return true;
+            return 1;
         }
 
         public async Task DeleteAsync(int petId)

@@ -1,5 +1,4 @@
 ﻿using PawMates.Infrastructure.Data.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace PawMates.Core.Models.PetViewModels
 {

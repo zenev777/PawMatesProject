@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PawMates.Infrastructure.Data.Enums;
-using PawMates.Infrastructure.Data.Models;
+﻿using PawMates.Infrastructure.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 

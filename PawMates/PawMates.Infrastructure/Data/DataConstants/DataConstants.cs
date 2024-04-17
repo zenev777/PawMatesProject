@@ -18,12 +18,7 @@
         public const int PetColorMinLenght = 3;
 
         public const int PetWeightMaxLenght = 500;
-        public const int PetWeightMinLenght = 0;
-
-        //Posts constants
-
-        public const int PostDescriptionMaxLenght = 56;
-        public const int PostDescriptionMinLenght = 4;
+        public const int PetWeightMinLenght = 0;   
 
         //Events constants
 
@@ -31,7 +26,7 @@
         public const int EventNameMinLenght = 8;
 
         public const int EventDescriptionMaxLenght = 250;
-        public const int EventDescriptionMinLenght = 20;
+        public const int EventDescriptionMinLenght = 5;
 
         public const int EventLocationMaxLenght = 100;
         public const int EventLocationMinLenght = 10;
@@ -42,9 +37,6 @@
 
         public const int TypeNameMaxLenght = 70;
         public const int TypeNameMinLenght = 8;
-
-        public const int TypeDescriptionMaxLenght = 250;
-        public const int TypeDescriptionMinLenght = 20;
 
         //Error message
 

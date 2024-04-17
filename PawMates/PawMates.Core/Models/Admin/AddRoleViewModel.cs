@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static PawMates.Infrastructure.Data.DataConstants.IdentityConstants;
+﻿using System.ComponentModel.DataAnnotations;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
+using static PawMates.Infrastructure.Data.DataConstants.IdentityConstants;
 
 namespace PawMates.Core.Models.Admin
 {
@@ -13,6 +8,7 @@ namespace PawMates.Core.Models.Admin
     {
         [Required]
         [StringLength(UserRoleNameMaxLenght, MinimumLength = UserRoleNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Role Name")]
         public string RoleName { get; set; } = string.Empty;
     }
 }

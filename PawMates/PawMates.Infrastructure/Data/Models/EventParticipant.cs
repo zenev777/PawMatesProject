@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using PawMates.Infrastructure.Data.IdentityModels;
+﻿using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -3,12 +3,7 @@ using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Models.EventViewModels;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.EventService
@@ -38,10 +33,10 @@ namespace PawMates.Core.Services.EventService
                 return false;
             }
 
-            //if (start < DateTime.Now)
-            //{
-            //    return false;
-            //}
+            if (start < DateTime.Now)
+            {
+                return false;
+            }
 
             var entity = new Event()
             {
@@ -62,11 +57,6 @@ namespace PawMates.Core.Services.EventService
         public async Task<int> EditEventAsync(int eventId, EventFormViewModel model)
         {
             var eventToEdit = await repository.GetByIdAsync<Event>(eventId);
-
-            if (eventToEdit == null)
-            {
-                return -1;
-            }
 
             DateTime start = DateTime.Now;
 

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PawMates.Core.Contracts.Admin;
 using PawMates.Core.Models.Admin;
-using PawMates.Core.Services.Admin;
 using PawMates.Infrastructure.Data.IdentityModels;
 
 namespace PawMates.Areas.AdministrativeDirector.Controllers

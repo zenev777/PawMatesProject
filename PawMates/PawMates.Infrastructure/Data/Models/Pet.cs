@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PawMates.Infrastructure.Data.Enums;
 using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;

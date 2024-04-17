@@ -1,21 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawMates.Core.Contracts.PetInterface;
-using PawMates.Infrastructure.Data.Common;
-using PawMates.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Core.Services.PostService;
-using PawMates.Core.Contracts.PostInterface;
-using PawMates.Core.Services.PetService;
-using PawMates.Infrastructure.Data.Models;
-using PawMates.Data.Migrations;
-using PawMates.Infrastructure.Data.Enums;
-using Moq;
+using PawMates.Infrastructure.Data;
+using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.IdentityModels;
+using PawMates.Infrastructure.Data.Models;
 
 namespace PawMates.UnitTests
 {

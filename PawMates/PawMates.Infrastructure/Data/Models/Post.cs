@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using PawMates.Infrastructure.Data.Enums;
+﻿using Microsoft.EntityFrameworkCore;
 using PawMates.Infrastructure.Data.IdentityModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Infrastructure.Data.Models
 {
@@ -15,8 +11,6 @@ namespace PawMates.Infrastructure.Data.Models
         [Comment("Post identifier")]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(PostDescriptionMaxLenght)]
         [Comment("Post Description")]
         public string Description { get; set; } = string.Empty;
 

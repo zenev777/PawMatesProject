@@ -1,21 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PawMates.Infrastructure.Data.Common
 {
-        /// <summary>
-        /// Implementation of repository access methods
-        /// for Relational Database Engine
-        /// </summary>
-        /// <typeparam name="T">Type of the data table to which 
-        /// current reposity is attached</typeparam>
-        public class Repository : IRepository
+    /// <summary>
+    /// Implementation of repository access methods
+    /// for Relational Database Engine
+    /// </summary>
+    /// <typeparam name="T">Type of the data table to which 
+    /// current reposity is attached</typeparam>
+    public class Repository : IRepository
         {
             /// <summary>
             /// Entity framework DB context holding connection information and properties

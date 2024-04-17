@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using PawMates.Infrastructure.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Models.EventViewModels
@@ -21,6 +17,7 @@ namespace PawMates.Core.Models.EventViewModels
         public string Location { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
+        [Display(Name = "Starts On")]
         public string StartsOn { get; set; } = string.Empty;
 
         public int Id { get; set; }

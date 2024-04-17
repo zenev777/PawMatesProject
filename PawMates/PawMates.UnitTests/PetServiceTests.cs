@@ -1,18 +1,13 @@
-﻿using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.PetInterface;
 using PawMates.Core.Models.PetViewModels;
-using PawMates.Infrastructure.Data;
-using PawMates.Infrastructure.Data.Models;
 using PawMates.Core.Services.PetService;
+using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Enums;
-using Moq;
-using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 using PawMates.Infrastructure.Data.IdentityModels;
+using PawMates.Infrastructure.Data.Models;
+using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.UnitTests.Services
 {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PawMates.Infrastructure.Data.Models;
 using PawMates.Infrastructure.Data.IdentityModels;
-using Microsoft.AspNetCore.Identity;
+using PawMates.Infrastructure.Data.Models;
 
 namespace PawMates.Infrastructure.Data
 {

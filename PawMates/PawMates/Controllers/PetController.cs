@@ -35,12 +35,14 @@ namespace PawMates.Controllers
         {
             var userId = User.Id();
 
-            //Proverka za data na rajdane
-
 			var result = await petService.CreatePetAsync(model, userId);
 
-			if (result == false)
+			if (result == -1)
 			{
+                ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be: {DateOfBirthFormat}");
+            }
+            else if(result == 0)
+            {
                 return NotFound();
             }
 
@@ -201,8 +203,7 @@ namespace PawMates.Controllers
 
             if (await petService.EditPetAsync(model.Id, model) == -1)
             {
-                //ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be:{DateOfBirthFormat}");
-                return NotFound();
+                ModelState.AddModelError(nameof(model.DateOfBirth), $"Invalid Date! Format must be: {DateOfBirthFormat}");
             }
 
             if (ModelState.IsValid == false)

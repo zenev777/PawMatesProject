@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PawMates.Models;
-using System.Diagnostics;
 
 namespace PawMates.Controllers
 {

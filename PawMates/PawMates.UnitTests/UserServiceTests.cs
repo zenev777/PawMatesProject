@@ -1,15 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawMates.Core.Contracts.PetInterface;
-using PawMates.Infrastructure.Data.Common;
-using PawMates.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PawMates.Core.Contracts.Admin;
 using PawMates.Core.Services.Admin;
-using PawMates.Core.Services.PostService;
+using PawMates.Infrastructure.Data;
+using PawMates.Infrastructure.Data.Common;
 
 namespace PawMates.UnitTests
 {
