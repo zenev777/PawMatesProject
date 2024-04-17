@@ -4,6 +4,8 @@ using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Extensions;
+using PawMates.Infrastructure.Data.Models;
+using System.Net;
 
 namespace PawMates.Controllers
 {
@@ -33,6 +35,7 @@ namespace PawMates.Controllers
             {
                 return StatusCode(404); 
             }
+
 
             return View(model);
         }
@@ -70,7 +73,7 @@ namespace PawMates.Controllers
         {
             if ((await postService.ExistsAsync(id) == false))
             {
-                return StatusCode(500);
+                return StatusCode(404);
             }
 
             if (await postService.SameCreatorAsync(id, User.Id()) == false)
@@ -99,7 +102,7 @@ namespace PawMates.Controllers
         {
             if ((await postService.ExistsAsync(model.Id) == false))
             {
-                return StatusCode(500);
+                return StatusCode(404);
             }
 
             if (await postService.SameCreatorAsync(model.Id, User.Id()) == false)
@@ -108,6 +111,21 @@ namespace PawMates.Controllers
             };
 
             await postService.DeleteAsync(model.Id);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+               //return StatusCode(403);
+            }
+
+            var user = User.Id();      
+
+            var result = await postService.UpdateLikes(id,user);
 
             return RedirectToAction(nameof(All));
         }

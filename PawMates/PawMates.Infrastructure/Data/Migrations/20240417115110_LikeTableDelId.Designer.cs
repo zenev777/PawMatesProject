@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PawMates.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PawMates.Infrastructure.Data;
 namespace PawMates.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417115110_LikeTableDelId")]
+    partial class LikeTableDelId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,7 +303,7 @@ namespace PawMates.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikePosts");
+                    b.ToTable("LikePost");
                 });
 
             modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Pet", b =>
@@ -541,7 +543,7 @@ namespace PawMates.Data.Migrations
             modelBuilder.Entity("PawMates.Infrastructure.Data.Models.LikePost", b =>
                 {
                     b.HasOne("PawMates.Infrastructure.Data.Models.Post", "Post")
-                        .WithMany("LikePosts")
+                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -599,7 +601,7 @@ namespace PawMates.Data.Migrations
 
             modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Post", b =>
                 {
-                    b.Navigation("LikePosts");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

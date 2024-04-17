@@ -26,11 +26,6 @@ namespace PawMates.Controllers
                 return View("Error404");
             }
 
-            if (statusCode == 500)
-            {
-                return View("Error500");
-            }
-
             if (statusCode == 403)
             {
                 return View("Error403");

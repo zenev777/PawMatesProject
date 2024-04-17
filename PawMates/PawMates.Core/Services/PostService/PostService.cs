@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.PostViewModels;
+using PawMates.Core.Services.PetService;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
+using System.Drawing;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.PostService
@@ -10,6 +13,10 @@ namespace PawMates.Core.Services.PostService
     public class PostService : IPostService
     {
         private readonly IRepository repository;
+
+        //private Dictionary<int,string> LikedByUserIds ;
+   
+        //private int likeCounter = 0;
 
         public PostService(IRepository _repository)
         {
@@ -85,6 +92,7 @@ namespace PawMates.Core.Services.PostService
                     Creator = p.Creator.UserName,
                     Description = p.Description,
                     ImageUrl = p.ImageUrl,
+                    Likes = p.LikePosts.Count()
                 })
                 .ToListAsync();
 
@@ -110,6 +118,35 @@ namespace PawMates.Core.Services.PostService
             }
 
             return result;
+        }
+
+        public async Task<Post> UpdateLikes(int id, string userId)
+        {
+            var post = await repository.GetByIdAsync<Post>(id);
+
+            var like = new LikePost()
+            {
+                Post = post,
+                PostId = post.Id,
+                UserId = userId
+            };
+
+
+            var likeToAdd = await repository.AlreadyExistAsync<LikePost>(l=> l.PostId == id && l.UserId == userId);
+
+            if (likeToAdd == false)
+            {
+                post.LikePosts.Add(like);
+                await repository.AddAsync(like);
+            }
+            else
+            {
+                repository.Delete(like);
+            }
+
+            await repository.SaveChangesAsync();
+
+            return post;
         }
     }
 }

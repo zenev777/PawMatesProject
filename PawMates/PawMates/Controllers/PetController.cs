@@ -212,7 +212,5 @@ namespace PawMates.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
-
-	}
+    }
 }

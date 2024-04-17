@@ -25,6 +25,14 @@ namespace PawMates.Infrastructure.Data
                 .WithMany(e => e.EventParticipants)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<LikePost>()
+                .HasKey(ep => new { ep.PostId, ep.UserId });
+
+            modelBuilder.Entity<LikePost>()
+                .HasOne(e => e.Post)
+                .WithMany(e => e.LikePosts)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder
                 .Entity<PetType>()
                 .HasData(new PetType()
@@ -70,5 +78,6 @@ namespace PawMates.Infrastructure.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<LikePost> LikePosts { get; set; }
     }
 }
