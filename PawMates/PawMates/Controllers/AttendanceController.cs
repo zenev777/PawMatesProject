@@ -53,7 +53,7 @@ namespace PawMates.Controllers
 
             if (events == null)
             {
-                StatusCode(500);
+                StatusCode(404);
             }
 
             return View(events);

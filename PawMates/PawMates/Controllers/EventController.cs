@@ -52,7 +52,7 @@ namespace PawMates.Controllers
             if (result == false)
             {
                 //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
-                return StatusCode(500);
+                return NotFound();
             }
 
             if (!ModelState.IsValid)
@@ -68,20 +68,20 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(Id)) == false)
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             var userId = User.Id();
             if (await eventService.SameOrganiserAsync(Id, userId) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             var eventModel = await eventService.EventByIdAsync(Id);
 
             if (eventModel==null)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             var model = new EventFormViewModel()
@@ -101,23 +101,23 @@ namespace PawMates.Controllers
         {
             if (id != model.Id)
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await eventService.ExistsAsync(model.Id) == false)
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             if (await eventService.EditEventAsync(model.Id, model) == -1)
             {
                 //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (ModelState.IsValid == false)
@@ -133,19 +133,19 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(id) == false))
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await eventService.SameOrganiserAsync(id, User.Id()) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             var eventToDelete = await eventService.EventByIdAsync(id);
             
             if (eventToDelete == null)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             var model = new EventDeleteViewModel()
@@ -157,7 +157,7 @@ namespace PawMates.Controllers
 
             if (model == null)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             return View(model);
@@ -168,17 +168,17 @@ namespace PawMates.Controllers
         {
             if ((await eventService.ExistsAsync(model.Id) == false))
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await eventService.SameOrganiserAsync(model.Id, User.Id()) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             if (model == null)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             await eventService.DeleteAsync(model.Id);
