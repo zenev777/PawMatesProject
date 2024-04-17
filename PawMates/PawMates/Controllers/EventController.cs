@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PawMates.Core.Contracts.EventInterface;
 using PawMates.Core.Models.EventViewModels;
 using PawMates.Core.Models.PetViewModels;
-using PawMates.Core.Services.EventService;
 using PawMates.Extensions;
-using PawMates.Infrastructure.Data.Models;
 using System.Globalization;
-using System.Security.Claims;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Controllers
@@ -51,8 +47,7 @@ namespace PawMates.Controllers
 
             if (result == false)
             {
-                //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
-                return NotFound();
+                ModelState.AddModelError(nameof(model.StartsOn), $"Invalid date! Format must be: {EventStartDateFormat}");
             }
 
             if (!ModelState.IsValid)
@@ -116,8 +111,7 @@ namespace PawMates.Controllers
 
             if (await eventService.EditEventAsync(model.Id, model) == -1)
             {
-                //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
-                return NotFound();
+                ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
             }
 
             if (ModelState.IsValid == false)

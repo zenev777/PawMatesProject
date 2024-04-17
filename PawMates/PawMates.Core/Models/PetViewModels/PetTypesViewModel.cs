@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
-namespace PawMates.Core.Models.PetViewModels
+﻿namespace PawMates.Core.Models.PetViewModels
 {
     public class PetTypesViewModel
     {

@@ -38,9 +38,6 @@
         public const int TypeNameMaxLenght = 70;
         public const int TypeNameMinLenght = 8;
 
-        public const int TypeDescriptionMaxLenght = 250;
-        public const int TypeDescriptionMinLenght = 20;
-
         //Error message
 
         public const string RequireErrorMessage = "The field {0} is required";

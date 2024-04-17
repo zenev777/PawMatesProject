@@ -4,8 +4,6 @@ using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.PetViewModels;
 using PawMates.Core.Models.PostViewModels;
 using PawMates.Extensions;
-using PawMates.Infrastructure.Data.Models;
-using System.Net;
 
 namespace PawMates.Controllers
 {

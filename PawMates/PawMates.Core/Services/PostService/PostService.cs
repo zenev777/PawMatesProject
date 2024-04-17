@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Models.PostViewModels;
-using PawMates.Core.Services.PetService;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.Models;
-using System.Drawing;
 using static PawMates.Infrastructure.Data.DataConstants.DataConstants;
 
 namespace PawMates.Core.Services.PostService

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PawMates.Core.Models.EventViewModels
+﻿namespace PawMates.Core.Models.EventViewModels
 {
     public class EventInfoViewModel
     {

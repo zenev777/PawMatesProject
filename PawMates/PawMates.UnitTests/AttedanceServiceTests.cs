@@ -1,19 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moq;
 using PawMates.Core.Contracts.AttendanceInterface;
-using PawMates.Core.Contracts.EventInterface;
-using PawMates.Core.Contracts.PostInterface;
 using PawMates.Core.Services.AttendanceService;
-using PawMates.Core.Services.EventService;
 using PawMates.Infrastructure.Data;
 using PawMates.Infrastructure.Data.Common;
 using PawMates.Infrastructure.Data.IdentityModels;
 using PawMates.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PawMates.UnitTests
 {
