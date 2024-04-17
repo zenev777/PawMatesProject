@@ -33,7 +33,7 @@ namespace PawMates.Controllers
 
             if (model == null)
             {
-                return StatusCode(404); 
+                return NotFound();
             }
 
 
@@ -57,12 +57,12 @@ namespace PawMates.Controllers
 
             if (!ModelState.IsValid)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             if (result == false)
             {
-                return StatusCode(500);
+                return NotFound();
             }
 
             return RedirectToAction(nameof(All));
@@ -73,12 +73,12 @@ namespace PawMates.Controllers
         {
             if ((await postService.ExistsAsync(id) == false))
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await postService.SameCreatorAsync(id, User.Id()) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             var postToDelete = await postService.PostByIdAsync(id);
@@ -91,7 +91,7 @@ namespace PawMates.Controllers
 
             if (postToDelete == null)
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             return View(model);
@@ -102,12 +102,12 @@ namespace PawMates.Controllers
         {
             if ((await postService.ExistsAsync(model.Id) == false))
             {
-                return StatusCode(404);
+                return NotFound();
             }
 
             if (await postService.SameCreatorAsync(model.Id, User.Id()) == false)
             {
-                return StatusCode(403);
+                return Forbid();
             };
 
             await postService.DeleteAsync(model.Id);
