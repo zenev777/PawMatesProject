@@ -10,7 +10,7 @@ namespace PawMates.Core.Models.PetViewModels
 {
     public class AllPetsQueryModel
     {
-        public int PetsPerPage { get; } = 5;
+        public int PetsPerPage { get; } = 4;
 
         public string PetType { get; init; } = null!;
 

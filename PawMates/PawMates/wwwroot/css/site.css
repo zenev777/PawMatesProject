@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -159,4 +159,61 @@ body {
     .notfound h2 {
         font-size: 18px;
     }
+}
+
+
+.home-page {
+    background: #D9F5EF;
+}
+
+.home-page .floating-btn {
+    width: 90px;
+    height: 90px;
+    background: #52F5CE;
+    display: flex;
+    border-radius: 50%;
+    color: white;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px #007660;
+    position: fixed;
+    right: 80px;
+    bottom: 90px;
+    transition: background 0.5s;
+}
+
+.floating-btn:active,
+.btn-delete:active
+.btn-edit:active
+{
+    background: #00F4D4;
+}
+
+.btn-everywhere {
+    background: #2AF5E2;
+    box-shadow: 2px 2px 5px #007660;
+}
+
+.btn-delete {
+    background: #F49898;
+    box-shadow: 2px 2px 5px #007660;
+}
+
+.btn-edit {
+    box-shadow: 2px 2px 5px #007660;
+    background: #AAF5A9;
+}
+
+.bg-green {
+    background: #52F5CE;
+    box-shadow: 2px 2px 5px #007660;
+}
+
+.pet-container{
+    margin-top: 1em;
+    margin-bottom: 4em;
+    gap:3.3em;
+    display: flex;
 }

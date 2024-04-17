@@ -22,5 +22,7 @@ namespace PawMates.Core.Contracts.PostInterface
         Task<bool> ExistsAsync(int id);
 
         Task<bool> SameCreatorAsync(int postId, string currentCreatorId);
+
+        Task<Post> UpdateLikes(int id, string userId);
     }
 }

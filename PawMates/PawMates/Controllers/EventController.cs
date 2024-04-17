@@ -117,7 +117,7 @@ namespace PawMates.Controllers
             if (await eventService.EditEventAsync(model.Id, model) == -1)
             {
                 //ModelState.AddModelError(nameof(model.StartsOn), $"Invalid Date! Format must be:{EventStartDateFormat}");
-                return StatusCode(500);
+                return StatusCode(404);
             }
 
             if (ModelState.IsValid == false)

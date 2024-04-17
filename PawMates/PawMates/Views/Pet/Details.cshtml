@@ -8,21 +8,24 @@
 <hr />
 
 <div class="row">
-    <div class="card w-100">
-        <div class="card-body">
-            <h3 class="card-title text-center">@Model.Name</h3>
-            <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap" style="height:200px ; width=200px; object-fit: cover; object-position: 25% 25%;">
-            <p class="mb-0"><span class="fw-bold">Date of Birth: </span>@Model.DateOfBirth</p>
-            <p class="mb-0"><span class="fw-bold">Pet Type: </span>@Model.PetType</p>
-            <p class="mb-0"><span class="fw-bold">Breed: </span>@Model.Breed</p>
-            <p class="mb-0"><span class="fw-bold">Gender: </span>@Model.Gender</p>
-            <p class="mb-0"><span class="fw-bold">Main Color: </span>@Model.MainColor</p>
-            <p class="mb-0"><span class="fw-bold">Secondary Color: </span>@Model.SecondaryColor</p>
-            <p class="mb-0"><span class="fw-bold">Weight: </span>@Model.Weight</p>
+    <div class="card w-100" style="justify-content:center">
+        <div class="card-body" style="display:flex; ; flex-wrap:wrap; justify-content:space-evenly">
+            <div>
+                <img class="card-img-top" src=@Model.ImageUrl alt="Card image cap" style="max-width:400px; width:auto; max-height=300px; height:auto;border-radius:15%; object-fit: cover; object-position: 25% 25%; ">
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:end; align-items:center">
+                <h3 class="card-title text-center">@Model.Name</h3>
+                <p class="mb-0"><span class="fw-bold">Date of Birth: </span>@Model.DateOfBirth</p>
+                <p class="mb-0"><span class="fw-bold">Pet Type: </span>@Model.PetType</p>
+                <p class="mb-0"><span class="fw-bold">Breed: </span>@Model.Breed</p>
+                <p class="mb-0"><span class="fw-bold">Gender: </span>@Model.Gender</p>
+                <p class="mb-0"><span class="fw-bold">Main Color: </span>@Model.MainColor</p>
+                <p class="mb-0"><span class="fw-bold">Secondary Color: </span>@Model.SecondaryColor</p>
+                <p class="mb-0"><span class="fw-bold">Weight: </span>@Model.Weight</p>
+            </div> 
         </div>
 
-        <a asp-controller="Pet" asp-action="All" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to All Events</a>
-        <a asp-controller="Pet" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+        <a asp-controller="Pet" asp-action="MyPets" class="btn btn-everywhere mb-2 w-100 p-3 fw-bold">Back To My Pets</a>
 
 
     </div>

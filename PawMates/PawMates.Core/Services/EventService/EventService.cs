@@ -38,10 +38,10 @@ namespace PawMates.Core.Services.EventService
                 return false;
             }
 
-            if (start < DateTime.Now)
-            {
-                return false;
-            }
+            //if (start < DateTime.Now)
+            //{
+            //    return false;
+            //}
 
             var entity = new Event()
             {
@@ -75,11 +75,6 @@ namespace PawMates.Core.Services.EventService
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
             out start))
-            {
-                return -1;
-            }
-
-            if (start < DateTime.Now)
             {
                 return -1;
             }

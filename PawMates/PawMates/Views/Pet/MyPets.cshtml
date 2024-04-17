@@ -8,7 +8,7 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="text-center row">
+<div class="text-center">
     @if (Model.Count()==0)
     {
         <h1 class="text-center">You haven't added a pet yet</h1>
@@ -18,14 +18,14 @@
     {    
         @if (User.Identity.Name==p.OwnerId)
         {
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src=@p.ImageUrl alt="Card image cap" style="height:180px; object-fit: cover; object-position: 25% 25%;">
+            <div class="card" style="width: 18rem;-webkit-box-shadow: 0px 2px 25px -1px rgba(0,0,0,0.75);-moz-box-shadow: 0px 2px 25px -1px rgba(0,0,0,0.75); box-shadow: 0px 2px 25px -1px rgba(0,0,0,0.75);">
+                <img class="card-img-top" src=@p.ImageUrl alt="Card image cap" style="width: 100%; height:180px; object-fit: cover; object-position: 25% 25%;">
                 <div class="card-body">
                     <h5 class="card-title">@p.Name</h5>
                 </div>
-                <a asp-controller="Pet" asp-action="Edit" asp-route-id="@p.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="Pet" asp-action="Details" asp-route-id="@p.Id" class="btn btn-success">Details</a>
-                <a asp-controller="Pet" asp-action="Delete" asp-route-id="@p.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Pet" asp-action="Edit" asp-route-id="@p.Id" class="btn btn-edit">Edit</a>
+                <a asp-controller="Pet" asp-action="Details" asp-route-id="@p.Id" class="btn btn-everywhere">Details</a>
+                <a asp-controller="Pet" asp-action="Delete" asp-route-id="@p.Id" class="btn btn-delete">Delete</a>
             </div>
         }     
     }

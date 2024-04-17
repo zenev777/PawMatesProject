@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PawMates.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PawMates.Infrastructure.Data;
 namespace PawMates.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417093935_LikeTable")]
+    partial class LikeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,19 +291,28 @@ namespace PawMates.Data.Migrations
                     b.ToTable("EventParticipants");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.LikePost", b =>
+            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Like", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PostId", "UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikePosts");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Pet", b =>
@@ -538,12 +549,12 @@ namespace PawMates.Data.Migrations
                     b.Navigation("Helper");
                 });
 
-            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.LikePost", b =>
+            modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Like", b =>
                 {
                     b.HasOne("PawMates.Infrastructure.Data.Models.Post", "Post")
-                        .WithMany("LikePosts")
+                        .WithMany("Likes")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PawMates.Infrastructure.Data.IdentityModels.ApplicationUser", "User")
@@ -599,7 +610,7 @@ namespace PawMates.Data.Migrations
 
             modelBuilder.Entity("PawMates.Infrastructure.Data.Models.Post", b =>
                 {
-                    b.Navigation("LikePosts");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }
