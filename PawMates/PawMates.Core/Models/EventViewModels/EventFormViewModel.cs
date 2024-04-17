@@ -21,6 +21,7 @@ namespace PawMates.Core.Models.EventViewModels
         public string Location { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
+        [Display(Name = "Starts On")]
         public string StartsOn { get; set; } = string.Empty;
 
         public int Id { get; set; }

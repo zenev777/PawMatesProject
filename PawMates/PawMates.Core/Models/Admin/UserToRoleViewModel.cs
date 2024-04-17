@@ -15,6 +15,7 @@ namespace PawMates.Core.Models.Admin
         
         [Required]
         [StringLength(UserUserameMaxLenght, MinimumLength = UserUserameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Username")]
         public string UserName { get; set; } = string.Empty;
 
 

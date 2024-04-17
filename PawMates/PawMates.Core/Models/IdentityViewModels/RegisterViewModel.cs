@@ -13,15 +13,19 @@ namespace PawMates.Core.Models.IdentityViewModels
     {
         [Required]
         [StringLength(UserUserameMaxLenght, MinimumLength = UserUserameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Username")]
         public string UserName { get; set; } = null!;
 
         [StringLength(UserNamesMaxLenght, MinimumLength = UserNamesMinLenght,ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "First Name")]
         public string? FirstName { get; set; } = null!;
 
         [StringLength(UserNamesMaxLenght, MinimumLength = UserNamesMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Last Name")]
         public string? LastName { get; set; } = null!;
 
         [StringLength(UserPhoneNumMaxLenght, MinimumLength = UserPhoneNumMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Phone Number")]
         public string? PhoneNumber { get; set; } = null!;
 
         [Required]
@@ -36,6 +40,7 @@ namespace PawMates.Core.Models.IdentityViewModels
 
         [Compare(nameof(Password))]
         [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; } = null!;
     }
 }

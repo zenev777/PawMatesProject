@@ -15,8 +15,6 @@ namespace PawMates.Infrastructure.Data.Models
         [Comment("Post identifier")]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(PostDescriptionMaxLenght)]
         [Comment("Post Description")]
         public string Description { get; set; } = string.Empty;
 

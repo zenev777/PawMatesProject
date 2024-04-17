@@ -13,6 +13,7 @@ namespace PawMates.Core.Models.Admin
     {
         [Required]
         [StringLength(UserRoleNameMaxLenght, MinimumLength = UserRoleNameMinLenght, ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Role Name")]
         public string RoleName { get; set; } = string.Empty;
     }
 }
