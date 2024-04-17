@@ -23,13 +23,13 @@
 
             @if (User.Identity.Name == e.OrganiserId)
             {
-                <a asp-controller="Event" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
-                <a asp-controller="Event" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+                <a asp-controller="Event" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-delete mb-2 w-100 p-3 fw-bold">Delete</a>
+                <a asp-controller="Event" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-edit mb-2 w-100 p-3 fw-bold">Edit</a>
             }
             else
             {
                 <form class="input-group-sm" asp-controller="Attendance" asp-action="Join" asp-route-id="@e.Id">
-                    <input type="submit" value="Join" class="fs-6 btn btn-warning mb-2 w-100 p-3 fw-bold" />
+                    <input type="submit" value="Join" class="fs-6 btn btn-everywhere mb-2 w-100 p-3 fw-bold" />
                 </form>
             }
         </div>

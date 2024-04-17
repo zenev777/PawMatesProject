@@ -291,7 +291,7 @@ namespace PawMates.UnitTests
                 Name = "Test",
                 Description = "Test",
                 Location = "Test Location",
-                StartsOn = DateTime.Now,
+                StartsOn = DateTime.Parse("01/01/2020 15:00"),
                 Id = 1
             });
 
