@@ -163,7 +163,7 @@ body {
 
 
 .home-page {
-    background: #D9F5EF;
+    
 }
 
 .home-page .floating-btn {
@@ -207,7 +207,7 @@ body {
 }
 
 .bg-green {
-    background: #52F5CE;
+    background: #ccfff3;
     box-shadow: 2px 2px 5px #007660;
 }
 
@@ -216,4 +216,35 @@ body {
     margin-bottom: 4em;
     gap:3.3em;
     display: flex;
+}
+
+.post-custom-css {
+    border-radius: 4%;
+    box-shadow: #ccfff3 0px 2px 10px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.profile-icon {
+    width: 12px;
+    fill: #52F5CE;
+    padding-bottom:5px;
+}
+
+.img-post-custom {
+    border-radius: 1%;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.like-btn{
+    width: 30px
+}
+
+.like-div{
+    margin-left:1em;
+    display: flex;
+    flex-direction:column;
+    align-items: start;
+}
+
+.like-numbers{
+    padding-left:0.66em;
 }
