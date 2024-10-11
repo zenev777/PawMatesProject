@@ -28,6 +28,11 @@ body {
     box-sizing: border-box;
 }
 
+.navbar-nav{
+    gap:2em;
+    padding-left: 2em;
+    font-size:1.2em;
+}
 .not-f-body {
     padding: 0;
     margin: 0;
