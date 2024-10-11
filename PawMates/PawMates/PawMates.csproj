@@ -24,4 +24,8 @@
     <ProjectReference Include="..\PawMates.Core\PawMates.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>
