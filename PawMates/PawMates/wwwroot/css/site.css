@@ -163,52 +163,51 @@ body {
 
 
 .home-page {
-    
 }
 
-.home-page .floating-btn {
-    width: 90px;
-    height: 90px;
-    background: #52F5CE;
-    display: flex;
-    border-radius: 50%;
-    color: white;
-    font-size: 40px;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    box-shadow: 2px 2px 5px #007660;
-    position: fixed;
-    right: 80px;
-    bottom: 90px;
-    transition: background 0.5s;
-}
+    .home-page .floating-btn {
+        width: 90px;
+        height: 90px;
+        background: #bba284;
+        display: flex;
+        border-radius: 50%;
+        color: white;
+        font-size: 40px;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        position: fixed;
+        right: 80px;
+        bottom: 90px;
+        transition: background 0.5s;
+    }
 
 .floating-btn:active,
 .btn-delete:active
-.btn-edit:active
-{
-    background: #00F4D4;
+.btn-edit:active {
+    background: #bba282;
 }
 
 .btn-everywhere {
-    background: #2AF5E2;
-    box-shadow: 2px 2px 5px #007660;
+    background: #bba284;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    color: white;
 }
 
 .btn-delete {
-    background: #F49898;
-    box-shadow: 2px 2px 5px #007660;
+    background: #ffd9d9;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .btn-edit {
-    box-shadow: 2px 2px 5px #007660;
-    background: #AAF5A9;
+    box-shadow: 2px 2px 5px #e6ffe5;
+    background: #e6ffe5;
 }
 
 .bg-green {
-    background: #ccfff3;
-    box-shadow: 2px 2px 5px #007660;
+    background: #e9e2dd;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .pet-container{
@@ -220,22 +219,24 @@ body {
 
 .post-custom-css {
     border-radius: 4%;
-    box-shadow: #ccfff3 0px 2px 10px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    box-shadow: #bba284 0px 2px 10px -1px, #bba284 0px 1px 3px -1px;
 }
 
 .profile-icon {
     width: 12px;
-    fill: #52F5CE;
-    padding-bottom:5px;
+    fill: #bba284;
+    padding-bottom: 5px;
 }
 
 .img-post-custom {
     border-radius: 1%;
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    box-shadow: #bba284 0px 2px 4px 0px, #bba284 0px 2px 16px 0px;
+    margin-bottom: 1em;
 }
 
-.like-btn{
-    width: 30px
+.like-btn {
+    width: 30px;
+    fill: #bba284;
 }
 
 .like-div{
@@ -247,4 +248,12 @@ body {
 
 .like-numbers{
     padding-left:0.66em;
+}
+
+.lockscr-text {
+    color: #bba284;
+}
+
+.img-fluid {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
 }
